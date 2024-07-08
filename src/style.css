@@ -52,7 +52,7 @@
 }
 
 .menu-link,
-.project-link {
+.project-link{
     display: flex;
     align-items: center;
     width: 225px;
@@ -61,8 +61,28 @@
     text-decoration: none;
     border-radius: 5px;
     background-color: white;
-    padding-left: 20px;
+    padding-left: 15px;
     gap: 5px;
+}
+
+.project-link {
+    justify-content: space-between;
+}
+
+.project-content {
+    display: flex;
+    gap: 5px;
+}
+
+.project-edit {
+    display: flex;
+    align-items: center;
+    margin-right: 12px;
+}
+
+.project-edit > img:hover {
+    width: 120%;
+    height: 120%;
 }
 
 #menu-projects {
@@ -80,9 +100,19 @@
     width: 225px;
     height: 40px;
     border-bottom: 1px solid var(--main-font-color);
-    padding-left: 20px;
+    padding-left: 15px;
     
 }
+
+.project-title {
+    justify-content: space-between;
+    
+}
+
+.project-title > img {
+    cursor: pointer;
+}
+
 #project-footer {
     border-top: 1px solid var(--main-font-color);
     border-bottom: none;
