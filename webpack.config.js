@@ -32,12 +32,12 @@ module.exports = {
       {
         test: /\.(png|svg|jpg|jpeg|gif)$/i,
         type: 'asset/resource',
-        // generates any other assets 
+        // generates any other assets in a folder
         generator: {
           filename: 'assets/[name].[hash][ext]'
         }
       },
-      // this loads in any html and such
+      // this loads in any html to the dist folder
       {
         test: /\.html$/i,
         use: [{
