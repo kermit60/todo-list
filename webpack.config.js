@@ -1,6 +1,6 @@
 const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
-const CopyWebpackPlugin = require('copy-webpack-plugin');
+
 
 module.exports = {
   mode: 'development',
@@ -32,10 +32,12 @@ module.exports = {
       {
         test: /\.(png|svg|jpg|jpeg|gif)$/i,
         type: 'asset/resource',
+        // generates any other assets 
         generator: {
           filename: 'assets/[name].[hash][ext]'
         }
       },
+      // this loads in any html and such
       {
         test: /\.html$/i,
         use: [{
