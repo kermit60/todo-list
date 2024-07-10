@@ -11,23 +11,23 @@
     <div id="container">
         <nav id="side-bar">
             <div id="menu-links">
-                <a href="#" class="menu-link">
+                <a href="#" class="menu-link link">
                     <img src="./assets/all-icon.svg" alt="menu-icon-all">
                     <p class="menu-link-title">All</p>
                 </a>
-                <a href="#" class="menu-link">
+                <a href="#" class="menu-link link">
                     <img src="./assets/today-icon.svg" alt="menu-icon-all">
                     <p class="menu-link-title">Today</p>
                 </a>
-                <a href="#" class="menu-link">
+                <a href="#" class="menu-link link">
                     <img src="./assets/week-icon.svg" alt="menu-icon-all">
                     <p class="menu-link-title">Week</p>
                 </a>
-                <a href="#" class="menu-link">
+                <a href="#" class="menu-link link">
                     <img src="./assets/important-icon.svg" alt="menu-icon-all">
                     <p class="menu-link-title">Important</p>
                 </a>
-                <a href="#" class="menu-link">
+                <a href="#" class="menu-link link">
                     <img src="./assets/completed-icon.svg" alt="menu-icon-all">
                     <p class="menu-link-title">Completed</p>
                 </a>
@@ -39,7 +39,7 @@
                     
                 </div>
                 <div class="project-links">
-                    <a href="#" class="project-link">
+                    <a href="#" class="project-link link">
                         
                         <div class="project-content">
                             <img src="./assets/important-icon.svg" alt="project-icon">
@@ -52,7 +52,7 @@
                             <img src="./assets/delete-icon.svg" alt="project edit icon">
                         </div>
                     </a>
-                    <a href="#" class="project-link">
+                    <a href="#" class="project-link link">
                         <div class="project-content">
                             <img src="./assets/important-icon.svg" alt="project-icon">
                             <p class="menu-link-title">Important</p>
@@ -77,7 +77,10 @@
                 <img src="./assets/all-icon.svg" alt="all calendar icon">
                 <h1>All</h1>
             </header>
-            <div id="task-header">Tasks (1)</div>
+            <div id="task-header">
+                <p>Tasks (1)</p>
+                <img src="./assets/add-circle.svg" alt="add-icon">
+            </div>
             <div id="task-list">
                 <div class="task-item">
                     <div class="flex">
@@ -115,11 +118,16 @@
                         <img src="./assets/info-icon.svg" alt="">
                     </div>
                 </div>
-
             </div>
         </main>
     </div>
+    <dialog id="dialog">
+        <form action="" method="dialog">
+            <h1 class="form-title">Add project</h1>
+            <button id="close-dialog">Close</button>
+        </form>
+    </dialog> 
+    <button id="show-dialog">Show</button>
     
-
 </body>
 </html>
