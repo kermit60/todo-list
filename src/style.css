@@ -33,7 +33,7 @@
 
 /* SIDEBAR */
 #side-bar {
-    height: 100%;
+    height: 100vh;
     background-color: var(--header-background-color);
 }
 
@@ -51,8 +51,7 @@
     padding: 20px;
 }
 
-.menu-link,
-.project-link{
+.link {
     display: flex;
     align-items: center;
     width: 225px;
@@ -124,24 +123,29 @@
     font-weight: 500;
 }
 
-.selected {
+.selected,
+.selected-hover {
     background-color: var(--header-color);
 }
 
 .selected > img,
-.selected > div > img{
+.selected > div > img,
+.selected-hover > img,
+.selected-hover > div > img {
     filter: invert(100%) sepia(0%) saturate(0%) hue-rotate(93deg) brightness(200%) contrast(103%);
 }
 
 .selected > p,
-.selected > div > p {
+.selected > div > p,
+.selected-hover > p,
+.selected-hover > div > p {
     color: var(--main-opposite-font-color);
 }
 
 /* MAIN CONTENTS */
 #main {
     margin: 0 auto;
-    height: 1000px;
+    /* height: 1000px; */
     padding: 25px;
     width: clamp(250px, 65%, 750px);
 }
@@ -195,4 +199,94 @@ h1 {
 /* making the icons less dark */
 img {
     filter: opacity(75%);
+}
+
+/* dialog/form */
+#project-dialog {
+    margin: auto auto;
+    box-shadow: 0px 2px 8px 0px rgba(0, 0, 0, .175);
+    border-radius: 5px;
+    width: 400px;
+    border: none;
+}
+
+#project-form {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    padding: 20px;
+    
+}
+
+.form-title {
+    padding: 15px;
+    background: linear-gradient(90deg, var(--header-color), #a8e6ae);
+    color: var(--main-opposite-font-color);
+    font-size: 25px;
+    font-weight: 500;
+    
+}
+
+#project-form > div {
+    font-size: 17px;
+}
+
+.inputs {
+    padding-left: 10px;
+    height: 32px;
+    margin-bottom: 5px;
+}
+
+#project-icons {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.project-icon {
+    display: flex;
+    align-items: center;
+    padding: 5px;
+    border: rgb(210, 208, 208) 1px solid;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.project-icon:hover,
+.project-submit > button:hover,
+.icon-selected {
+    border-color: rgb(119, 119, 129);
+    transition: .2s;
+}
+
+.project-submit {
+    display: flex;
+    justify-content: end;
+    gap: 10px;
+}
+
+.project-submit > button,
+.project-submit > input {
+    padding: 8px 12px;
+    font-size: 15px;
+    border-radius: 3px;
+    background: white;
+    cursor: pointer;
+    border: rgb(210, 208, 208) 1px solid;
+}
+
+.project-submit > input {
+    background-color: var(--header-color);
+    color: var(--main-opposite-font-color);
+    border: none;
+}
+
+.project-submit > input:hover {
+    background-color: rgb(64, 231, 125);
+
+}
+
+.divider {
+    border-top: 1px solid grey;
+    margin: 15px 0;
 }

@@ -1,6 +1,6 @@
 const dialog = (() => {
-    const dialogForm = document.querySelector('#dialog'); 
-    const dialogCloseButton = document.querySelector('#close-dialog');
+    const dialogForm = document.querySelector('#project-dialog'); 
+    const dialogCloseButton = document.querySelector('.close-dialog');
     const dialogShowButton = document.querySelector('#show-dialog');   
     dialogCloseButton.addEventListener('click', (e) => {
         e.preventDefault();
@@ -20,6 +20,14 @@ const menuLinks = (() => {
             reset();
             link.classList.add('selected');
         });
+
+        link.addEventListener('mouseover', () => {
+            link.classList.add('selected-hover');
+        })
+
+        link.addEventListener('mouseout', () => {
+            link.classList.remove('selected-hover');
+        })
     }
 
     const reset = () => {
@@ -30,4 +38,4 @@ const menuLinks = (() => {
 
 })();
 
-export default dialog;
+export default {dialog, menuLinks};

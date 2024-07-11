@@ -121,13 +121,30 @@
             </div>
         </main>
     </div>
-    <dialog id="dialog">
-        <form action="" method="dialog">
-            <h1 class="form-title">Add project</h1>
-            <button id="close-dialog">Close</button>
+    <dialog id="project-dialog">
+        <h1 class="form-title">Add project</h1>
+        <form id="project-form" action="" method="dialog">
+            <div>Title<span style="color: red;">*</span></div>
+            <input class="inputs" type="text" required>
+            <div>Icon</div>
+            <div id="project-icons">
+                <div class="project-icon"><img src="./assets/book-icon.svg" alt=""></div>
+                <div class="project-icon"><img src="./assets/family-icon.svg" alt=""></div>
+                <div class="project-icon"><img src="./assets/food-icon.svg" alt=""></div>
+                <div class="project-icon"><img src="./assets/gift-icon.svg" alt=""></div>
+                <div class="project-icon"> <img src="./assets/shopping-icon.svg" alt=""></div>
+                <div class="project-icon"><img src="./assets/sports-icon.svg" alt=""></div>
+            </div>
+            <hr class="divider">
+            <div class="project-submit">
+                <input type="submit" value="Add">
+                <button class="close-dialog">Cancel</button>
+            </div>
         </form>
     </dialog> 
     <button id="show-dialog">Show</button>
+    
+    
     
 </body>
 </html>
