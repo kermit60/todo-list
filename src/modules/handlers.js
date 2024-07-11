@@ -1,7 +1,24 @@
-const dialog = (() => {
+const projectDialog = (() => {
     const dialogForm = document.querySelector('#project-dialog'); 
     const dialogCloseButton = document.querySelector('.close-dialog');
-    const dialogShowButton = document.querySelector('#show-dialog');   
+    const dialogShowButton = document.querySelector('#project-add-button');   
+    
+   
+    dialogCloseButton.addEventListener('click', (e) => {
+        e.preventDefault();
+        dialogForm.close();
+    })
+    
+    dialogShowButton.addEventListener('click', () => {
+        dialogForm.showModal();
+    })
+})();
+
+const taskDialog = (() => {
+    const dialogForm = document.querySelector('#task-dialog'); 
+    const dialogCloseButton = document.querySelector('.task-close-dialog');
+    const dialogShowButton = document.querySelector('.task-add-button'); 
+
     dialogCloseButton.addEventListener('click', (e) => {
         e.preventDefault();
         dialogForm.close();
@@ -38,4 +55,4 @@ const menuLinks = (() => {
 
 })();
 
-export default {dialog, menuLinks};
+export default {projectDialog, menuLinks, taskDialog};

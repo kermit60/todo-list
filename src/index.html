@@ -35,8 +35,7 @@
             <div id="menu-projects">
                 <div class="project-title">
                     <p>Projects (2)</p>
-                    <img src="./assets/add-circle.svg" alt="add-icon">
-                    
+                    <img id="project-add-button" src="./assets/add-circle.svg" alt="add-icon">
                 </div>
                 <div class="project-links">
                     <a href="#" class="project-link link">
@@ -73,13 +72,13 @@
             </div>
         </nav>
         <main id="main">
-            <header id="main-header">
+            <header class="main-header">
                 <img src="./assets/all-icon.svg" alt="all calendar icon">
                 <h1>All</h1>
             </header>
             <div id="task-header">
                 <p>Tasks (1)</p>
-                <img src="./assets/add-circle.svg" alt="add-icon">
+                <img class="task-add-button" src="./assets/add-circle.svg" alt="add-icon">
             </div>
             <div id="task-list">
                 <div class="task-item">
@@ -142,9 +141,38 @@
             </div>
         </form>
     </dialog> 
-    <button id="show-dialog">Show</button>
-    
-    
+    <dialog id="task-dialog">
+        <h1 class="form-title">Add project</h1>
+        <form id="task-form" action="" method="dialog">
+            <div>
+                <label for="title">Title<span style="color: red;">*</span></label>
+                <input id="title" class="inputs" type="text" name="title" required>
+            </div>
+            <div>
+                <label for="description">Description</label>
+                <textarea id="description" class="inputs" rows="15" cols="45" name="description"></textarea>
+            </div>
+            <div>
+                <label for="dueDate">Due Date</label>
+                <input id="dueDate" class="inputs" type="date" name="title" required>
+
+            </div>
+            <div>
+                <div>Priority</div>
+                <select name="priority" id="priority">
+                    <option value="">How important is this task?</option>
+                    <option value="not-important">Meh, Not important</option>
+                    <option value="little-important">A little important</option>
+                    <option value="important">Very important</option>
+                </select>
+            </div>
+            <hr class="divider">
+            <div class="task-submit">
+                <input type="submit" value="Add">
+                <button class="task-close-dialog">Cancel</button>
+            </div>
+        </form>
+    </dialog>
     
 </body>
 </html>
