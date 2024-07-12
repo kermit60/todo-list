@@ -1,3 +1,4 @@
+import dom from './dom';
 
 const projects = (() => {
     let projectList = [];
@@ -10,7 +11,18 @@ const projects = (() => {
         }
     }
     
+    function addProject(icon, title) {
+        const project = new Project(icon, title);
+        projectList.push(project);
+        dom.changeProjectCounter(project.length);
+        return project;
+    }
 
+    const getProjects = () => {
+        return projectList;
+    }
+
+    return {addProject, getProjects}
 })();
 
 export default projects;
