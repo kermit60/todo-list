@@ -18,7 +18,7 @@ const handlers = (() => {
         }
 
         dialogSaveButton.addEventListener('click', () => {
-            dom.createProject();
+            dom.addProject();
         })
 
         dialogCloseButton.addEventListener('click', (e) => {
@@ -68,14 +68,30 @@ const handlers = (() => {
         }
 
         const reset = () => {
-            for (let link of sidebarLinks) {
+            const links = document.querySelectorAll('.link');
+            for (let link of links) {
                 link.classList.remove('selected');
             }
         }
-
+        return {reset};
     })();
    
-    return {projectDialog, taskDialog, menuLinks}
+    const makeProjectHover = (project) => {
+        project.addEventListener('click', () => {
+            menuLinks.reset();
+            project.classList.add('selected');
+        });
+
+        project.addEventListener('mouseover', () => {
+            project.classList.add('selected-hover');
+        })
+
+        project.addEventListener('mouseout', () => {
+            project.classList.remove('selected-hover');
+        })
+    }
+
+    return {projectDialog, taskDialog, menuLinks, makeProjectHover}
 })();
 
 export default handlers;

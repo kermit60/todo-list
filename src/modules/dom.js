@@ -8,7 +8,7 @@ import EditIcon from '../assets/edit-icon.svg';
 import DeleteIcon from '../assets/delete-icon.svg';
 
 import projects from './projects';
-
+import handlers from './handlers';
 
 
 const dom = (() => {
@@ -28,8 +28,14 @@ const dom = (() => {
         sports: SportsIcon
     }
 
-    const createProject = () => {
-        const title = projectTitle.value;
+    const createProject = (title="", icon="") => {
+        const pTitle = title;
+
+        // if there's no value for title, don't make it
+        if (!pTitle) {
+            return;
+        }
+
         const findSelectedIcon = () => {
             for (const projectIcons of projectIconList) {
                 if (projectIcons.classList.contains('icon-selected')) {
@@ -38,6 +44,8 @@ const dom = (() => {
             }
             return 'book';
         }
+
+        const pIcon = icon;
 
         // building the project in the dom
         const link = document.createElement('a');
@@ -55,9 +63,9 @@ const dom = (() => {
         projectEdit.classList.add('project-edit');
 
         projecttitle.classList.add('menu-link-title');
-        projecttitle.textContent = title;
+        projecttitle.textContent = pTitle;
 
-        projectIcon.src = iconList[findSelectedIcon()];
+        projectIcon.src = iconList[pIcon];
         projectIcon.setAttribute('alt', 'project-icon');
 
         editIcon.src = EditIcon;
@@ -77,10 +85,89 @@ const dom = (() => {
 
         link.appendChild(projectContent);
         link.appendChild(projectEdit);
+        // add event handlers for the new 
+        handlers.makeProjectHover(link);
+        
+        
+        projectLinks.appendChild(link);
+    }
 
-        const project = projects.addProject(findSelectedIcon(), title);
+    const addProject = () => {
+        const title = projectTitle.value;
+
+        // if there's no value for title, don't make it
+        if (!title) {
+            return;
+        }
+
+        const findSelectedIcon = () => {
+            for (const projectIcons of projectIconList) {
+                if (projectIcons.classList.contains('icon-selected')) {
+                    return projectIcons.dataset.icon;
+                } 
+            }
+            return 'book';
+        }
+
+        const icon = findSelectedIcon();
+
+        // building the project in the dom
+        const link = document.createElement('a');
+        const projectContent = document.createElement('div');
+        const projectEdit = document.createElement('div');
+        const projecttitle = document.createElement('p');
+        const projectIcon = new Image();
+        const editIcon = new Image();
+        const deleteIcon = new Image();
+        //  GETTING PROJECT ELEMENTS READY
+        link.setAttribute('href', '#');
+        link.classList.add('project-link', 'link');
+
+        projectContent.classList.add('project-content');
+        projectEdit.classList.add('project-edit');
+
+        projecttitle.classList.add('menu-link-title');
+        projecttitle.textContent = title;
+
+        projectIcon.src = iconList[icon];
+        projectIcon.setAttribute('alt', 'project-icon');
+
+        editIcon.src = EditIcon;
+        editIcon.setAttribute('alt', 'edit icon');
+        editIcon.classList.add('edit-project');
+
+        deleteIcon.src = DeleteIcon;
+        deleteIcon.setAttribute('alt', 'delete icon');
+        deleteIcon.classList.add('delete-project');
+
+        // ASSEMBLING PROJECT ELEMENTS
+        projectContent.appendChild(projectIcon);
+        projectContent.appendChild(projecttitle);
+
+        projectEdit.appendChild(editIcon);
+        projectEdit.appendChild(deleteIcon);
+
+        link.appendChild(projectContent);
+        link.appendChild(projectEdit);
+        // add event handlers for the new 
+        handlers.makeProjectHover(link);
+
+        const project = projects.addProject(icon, title);
+        
         console.log(project);
         projectLinks.appendChild(link);
+    }
+
+    const loadProjects = () => {
+        const list = projects.getProjects();
+        console.log('gets to loadProjects', list);
+
+        for (const project of list) {
+            // console.log('keepings on repeating', project);
+            const title = project.getTitle;
+            const icon = project.getIcon;
+            createProject(title, icon);
+        }
     }
 
     const resetProjectForm = () => {
@@ -88,6 +175,7 @@ const dom = (() => {
         for (const icon of projectIconList) {
             icon.classList.remove('icon-selected');
         }
+
         projectIconList[0].classList.add('icon-selected');
     }
 
@@ -95,7 +183,12 @@ const dom = (() => {
         projectCounter.value = `Projects (${counter})`;
     }
 
-    return {createProject, resetProjectForm, changeProjectCounter}
+    
+    return {createProject,
+        addProject, 
+        resetProjectForm, 
+        changeProjectCounter, 
+        loadProjects}
 })();
 
 

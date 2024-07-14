@@ -1,5 +1,10 @@
 import './style.css';
 import dialog from './modules/handlers';
+import dom from './modules/dom';
+import handlers from './modules/handlers';
+import projects from './modules/projects';
 
-console.log('does the live reloading work');
+
+dom.loadProjects();
+
 console.log('the live reloading does work')
