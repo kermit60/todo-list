@@ -166,6 +166,7 @@ const dom = (() => {
         
         console.log('created project: ', project);
         console.log('New project array', projects.getProjects());
+        changeProjectCounter();
         projectLinks.appendChild(link);
     }
 
@@ -190,8 +191,8 @@ const dom = (() => {
         projectIconList[0].classList.add('icon-selected');
     }
 
-    const changeProjectCounter = (counter) => {
-        projectCounter.value = `Projects (${counter})`;
+    const changeProjectCounter = () => {
+        projectCounter.textContent= `Projects (${projects.getProjectLength()})`;
     }
 
     

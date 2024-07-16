@@ -6,6 +6,7 @@ const handlers = (() => {
         const dialogCloseButton = document.querySelector('.close-dialog');
         const dialogShowButton = document.querySelector('#project-add-button');   
         const dialogSaveButton = document.querySelector('.project-submit > input');
+        const dialogTitle = document.querySelector('#project-dialog .form-title');
         const icons = document.querySelectorAll('.project-icon');
 
         for (const icon of icons) {
@@ -28,6 +29,7 @@ const handlers = (() => {
         })
         
         dialogShowButton.addEventListener('click', () => {
+            dialogTitle.textContent = 'Add project';
             dom.resetProjectForm();
             dialogForm.showModal();
         })
@@ -102,6 +104,7 @@ const handlers = (() => {
         const projectDelete = document.querySelector('.project-deletion-text');
         
         project.addEventListener('click', () => {
+            
             // Alter title if project or task
             if (element === 'project') {
                 taskDelete.classList.add('hide');
@@ -123,10 +126,12 @@ const handlers = (() => {
     const makeEdit = (project) => {
         const projectDialog = document.querySelector('#project-dialog');
         const taskDialog = document.querySelector('#task-dialog');
-        
+        const projectTitle = document.querySelector('#project-dialog .form-title');
+
         const element = project.dataset.element;
         if (element === 'project') {
             project.addEventListener('click', () => {
+                projectTitle.textContent = 'Edit project';
                 projectDialog.showModal();
             });
         } else {
