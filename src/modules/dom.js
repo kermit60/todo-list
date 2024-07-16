@@ -6,6 +6,12 @@ import SportsIcon from '../assets/sports-icon.svg';
 import BookIcon from '../assets/book-icon.svg';
 import EditIcon from '../assets/edit-icon.svg';
 import DeleteIcon from '../assets/delete-icon.svg';
+import AllIcon from '../assets/all-icon.svg';
+import TodayIcon from '../assets/today-icon.svg';
+import WeekIcon from '../assets/week-icon.svg';
+import ImportantIcon from '../assets/important-icon.svg';
+import CompleteIcon from '../assets/completed-icon.svg';
+
 
 import projects from './projects';
 import handlers from './handlers';
@@ -71,10 +77,14 @@ const dom = (() => {
         editIcon.src = EditIcon;
         editIcon.setAttribute('alt', 'edit icon');
         editIcon.classList.add('edit-project');
+        editIcon.setAttribute('data-element', 'project');
+        handlers.makeEdit(editIcon);
 
         deleteIcon.src = DeleteIcon;
         deleteIcon.setAttribute('alt', 'delete icon');
         deleteIcon.classList.add('delete-project');
+        deleteIcon.setAttribute('data-element', 'project');
+        handlers.makeDelete(deleteIcon, pTitle);
 
         // ASSEMBLING PROJECT ELEMENTS
         projectContent.appendChild(projectIcon);
@@ -154,7 +164,8 @@ const dom = (() => {
 
         const project = projects.addProject(icon, title);
         
-        console.log(project);
+        console.log('created project: ', project);
+        console.log('New project array', projects.getProjects());
         projectLinks.appendChild(link);
     }
 

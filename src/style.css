@@ -16,6 +16,10 @@
 
 }
 
+.hide {
+    display: none;
+}
+
 #header {
     display: flex;
     background: linear-gradient(90deg, var(--header-color), #a8e6ae);
@@ -35,7 +39,7 @@
 #side-bar {
     display: flex;
     flex-direction: column;
-    min-height: 96vh;
+    min-height: 95vh;
     background-color: var(--header-background-color);
 }
 
@@ -212,7 +216,8 @@ img {
 
 /* dialog/form */
 #project-dialog,
-#task-dialog {
+#task-dialog,
+#delete-dialog {
     margin: auto auto;
     box-shadow: 0px 2px 8px 0px rgba(0, 0, 0, .175);
     border-radius: 5px;
@@ -221,12 +226,25 @@ img {
 }
 
 #project-form,
-#task-form {
+#task-form,
+#delete-form {
     display: flex;
     flex-direction: column;
     gap: 5px;
-    padding: 20px;
-    
+    padding: 20px;    
+}
+
+#delete-dialog .form-title {
+    background: linear-gradient(90deg, red, #f96565);
+
+}
+
+#delete-form > div > input {
+    background-color: rgb(255, 47, 47);
+}
+
+#delete-form > div > b {
+    font-weight: 600;
 }
 
 .form-title {
@@ -239,7 +257,8 @@ img {
 }
 
 #project-form > div,
-#task-form > div {
+#task-form > div,
+#delete-form {
     font-size: 17px;
 }
 

@@ -91,7 +91,52 @@ const handlers = (() => {
         })
     }
 
-    return {projectDialog, taskDialog, menuLinks, makeProjectHover}
+    // When you create something new handlers are created with it
+    const makeDelete = (project, name='') => {
+        const dialogForm = document.querySelector('#delete-dialog');
+        const element = project.dataset.element;
+        const title = document.querySelector('#delete-dialog .form-title');
+        const taskName = document.querySelector('.task-deletion-text > b');
+        const projectName = document.querySelector('.project-deletion-text > b');
+        const taskDelete = document.querySelector('.task-deletion-text');
+        const projectDelete = document.querySelector('.project-deletion-text');
+        
+        project.addEventListener('click', () => {
+            // Alter title if project or task
+            if (element === 'project') {
+                taskDelete.classList.add('hide');
+                projectDelete.classList.remove('hide');
+                projectName.textContent = name;
+                title.textContent = 'Delete Project';
+    
+            } else {
+                projectDelete.classList.add('hide');
+                taskDelete.classList.remove('hide');
+                taskName.textContent = name;
+                title.textContent = 'Delete Task';
+            }
+            dialogForm.showModal();
+            console.log('clicked')
+        })
+    };
+
+    const makeEdit = (project) => {
+        const projectDialog = document.querySelector('#project-dialog');
+        const taskDialog = document.querySelector('#task-dialog');
+        
+        const element = project.dataset.element;
+        if (element === 'project') {
+            project.addEventListener('click', () => {
+                projectDialog.showModal();
+            });
+        } else {
+            project.addEventListener('click', () => {
+                taskDialog.showModal();
+            });
+        }
+    }
+
+    return {makeProjectHover, makeDelete, makeEdit};
 })();
 
 export default handlers;
