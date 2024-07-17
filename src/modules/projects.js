@@ -27,6 +27,13 @@ const projects = (() => {
         return project;
     }
 
+    // Returns the index of the project
+    function removeProject(id) {
+        console.log('removeProject method');
+        projectList.splice(id, 1);
+        console.log(projectList);
+    }
+
     const getProjects = () => {
         return projectList;
     }
@@ -34,7 +41,7 @@ const projects = (() => {
 
     const getProjectLength = () => projectList.length;
 
-    return {addProject, getProjects, getProjectLength}
+    return {addProject, removeProject, getProjects, getProjectLength}
 })();
 
 export default projects;

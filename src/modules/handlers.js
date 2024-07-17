@@ -1,4 +1,5 @@
 import dom from './dom';
+import projects from './projects';
 
 const handlers = (() => {
     const projectDialog = (() => {
@@ -102,9 +103,10 @@ const handlers = (() => {
         const projectName = document.querySelector('.project-deletion-text > b');
         const taskDelete = document.querySelector('.task-deletion-text');
         const projectDelete = document.querySelector('.project-deletion-text');
-        
-        project.addEventListener('click', () => {
-            
+        const deleteButton = document.querySelector('#delete-form > .project-submit > input');
+
+        project.addEventListener('click', (e) => {
+            console.log(e.target.parentElement.dataset.id);
             // Alter title if project or task
             if (element === 'project') {
                 taskDelete.classList.add('hide');
@@ -119,7 +121,15 @@ const handlers = (() => {
                 title.textContent = 'Delete Task';
             }
             dialogForm.showModal();
-            console.log('clicked')
+            
+            deleteButton.addEventListener('click', () => {
+                const projectDelete = e.target.parentElement;
+                console.log('Deleting', projectDelete);
+                projects.removeProject(projectDelete.dataset.id);
+                console.log(projects.getProjects())
+                dialogForm.close();
+                dom.loadProjects(projects.getProjects());
+            });
         })
     };
 
@@ -127,11 +137,13 @@ const handlers = (() => {
         const projectDialog = document.querySelector('#project-dialog');
         const taskDialog = document.querySelector('#task-dialog');
         const projectTitle = document.querySelector('#project-dialog .form-title');
+        const editIconButton = document.querySelector('#project-form > .project-submit > input')
 
         const element = project.dataset.element;
         if (element === 'project') {
             project.addEventListener('click', () => {
                 projectTitle.textContent = 'Edit project';
+                editIconButton.setAttribute('value', 'Edit');
                 projectDialog.showModal();
             });
         } else {
@@ -139,6 +151,8 @@ const handlers = (() => {
                 taskDialog.showModal();
             });
         }
+
+        
     }
 
     return {makeProjectHover, makeDelete, makeEdit};

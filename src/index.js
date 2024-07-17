@@ -5,6 +5,6 @@ import handlers from './modules/handlers';
 import projects from './modules/projects';
 
 
-dom.loadProjects();
+dom.loadProjects(projects.getProjects());
 
 console.log('the live reloading does work')

@@ -34,21 +34,12 @@ const dom = (() => {
         sports: SportsIcon
     }
 
-    const createProject = (title="", icon="") => {
+    const createProject = (title, icon, id="") => {
         const pTitle = title;
 
         // if there's no value for title, don't make it
         if (!pTitle) {
             return;
-        }
-
-        const findSelectedIcon = () => {
-            for (const projectIcons of projectIconList) {
-                if (projectIcons.classList.contains('icon-selected')) {
-                    return projectIcons.dataset.icon;
-                } 
-            }
-            return 'book';
         }
 
         const pIcon = icon;
@@ -92,6 +83,7 @@ const dom = (() => {
 
         projectEdit.appendChild(editIcon);
         projectEdit.appendChild(deleteIcon);
+        
 
         link.appendChild(projectContent);
         link.appendChild(projectEdit);
@@ -145,10 +137,14 @@ const dom = (() => {
         editIcon.src = EditIcon;
         editIcon.setAttribute('alt', 'edit icon');
         editIcon.classList.add('edit-project');
+        editIcon.setAttribute('data-element', 'project');
+        handlers.makeEdit(editIcon);
 
         deleteIcon.src = DeleteIcon;
         deleteIcon.setAttribute('alt', 'delete icon');
         deleteIcon.classList.add('delete-project');
+        deleteIcon.setAttribute('data-element', 'project');
+        handlers.makeDelete(deleteIcon, title);
 
         // ASSEMBLING PROJECT ELEMENTS
         projectContent.appendChild(projectIcon);
@@ -168,18 +164,20 @@ const dom = (() => {
         console.log('New project array', projects.getProjects());
         changeProjectCounter();
         projectLinks.appendChild(link);
+        setProjectIds();
     }
 
-    const loadProjects = () => {
-        const list = projects.getProjects();
+    const loadProjects = (list) => {
         console.log('gets to loadProjects', list);
-
+        projectLinks.textContent = '';
         for (const project of list) {
             // console.log('keepings on repeating', project);
             const title = project.getTitle;
             const icon = project.getIcon;
             createProject(title, icon);
         }
+        setProjectIds();
+        changeProjectCounter();
     }
 
     const resetProjectForm = () => {
@@ -195,7 +193,16 @@ const dom = (() => {
         projectCounter.textContent= `Projects (${projects.getProjectLength()})`;
     }
 
-    
+    const setProjectIds = () => {
+        console.log('setting project Ids');
+        const projectList = document.querySelectorAll('.project-edit');
+
+        for (let i = 0; i < projectList.length; ++i) {
+            projectList[i].setAttribute('data-id', `${i}`);
+            console.log('project', i, projectList[i]);
+        }
+    }
+
     return {createProject,
         addProject, 
         resetProjectForm, 
