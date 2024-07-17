@@ -2,11 +2,14 @@ import dom from './dom';
 import projects from './projects';
 
 const handlers = (() => {
+    const formTitle = document.querySelector('#project-dialog .form-title');
+    const dialogSaveButton = document.querySelector('.project-submit > input');
+
+
     const projectDialog = (() => {
         const dialogForm = document.querySelector('#project-dialog'); 
         const dialogCloseButton = document.querySelector('.close-dialog');
         const dialogShowButton = document.querySelector('#project-add-button');   
-        const dialogSaveButton = document.querySelector('.project-submit > input');
         const dialogTitle = document.querySelector('#project-dialog .form-title');
         const icons = document.querySelectorAll('.project-icon');
 
@@ -31,6 +34,7 @@ const handlers = (() => {
         
         dialogShowButton.addEventListener('click', () => {
             dialogTitle.textContent = 'Add project';
+            dialogSaveButton.value = 'Add'
             dom.resetProjectForm();
             dialogForm.showModal();
         })
@@ -136,16 +140,47 @@ const handlers = (() => {
     const makeEdit = (project) => {
         const projectDialog = document.querySelector('#project-dialog');
         const taskDialog = document.querySelector('#task-dialog');
-        const projectTitle = document.querySelector('#project-dialog .form-title');
+        const formTitle = document.querySelector('#project-dialog .form-title');
         const editIconButton = document.querySelector('#project-form > .project-submit > input')
+        const projectIcons = document.querySelectorAll('.project-icon');
 
         const element = project.dataset.element;
         if (element === 'project') {
-            project.addEventListener('click', () => {
-                projectTitle.textContent = 'Edit project';
+            project.addEventListener('click', (e) => {
+                const projectId = e.target.parentElement.dataset.id;
+                const projectInput = document.querySelector('#project-title-value');
+                const projectTitle = e.target.parentElement.previousElementSibling.lastChild.textContent;
+                const projectIcon = projects.getProjects()[projectId].getIcon;
+
+                console.log(e.target.parentElement)
+                console.log(title);
+                console.log(projectIcon);
+
+                // presetting the form values to match the project values
+                projectInput.value = projectTitle;
+                dom.resetProjectIcons();
+                for (const project of projectIcons) {
+                    if (project.dataset.icon === projectIcon) {
+                        project.classList.add('icon-selected');
+                    }
+                }
+                
+                
+                formTitle.textContent = 'Edit project';
                 editIconButton.setAttribute('value', 'Edit');
                 projectDialog.showModal();
+
+                // also get the correct icon selected
+
+                editIconButton.addEventListener('click', () => {
+                    const projectEdit = projectInput.value;
+
+                })
+
             });
+
+            
+
         } else {
             project.addEventListener('click', () => {
                 taskDialog.showModal();

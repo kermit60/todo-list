@@ -189,6 +189,12 @@ const dom = (() => {
         projectIconList[0].classList.add('icon-selected');
     }
 
+    const resetProjectIcons = () => {
+        for (const icon of projectIconList) {
+            icon.classList.remove('icon-selected');
+        }
+    }
+
     const changeProjectCounter = () => {
         projectCounter.textContent= `Projects (${projects.getProjectLength()})`;
     }
@@ -206,6 +212,7 @@ const dom = (() => {
     return {createProject,
         addProject, 
         resetProjectForm, 
+        resetProjectIcons,
         changeProjectCounter, 
         loadProjects}
 })();

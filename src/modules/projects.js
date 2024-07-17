@@ -12,8 +12,16 @@ const projects = (() => {
             return this._title;
         }
 
+        set newTitle(nTitle) {
+            this._title = nTitle;
+        }
+
         get getIcon() {
             return this._icon;
+        }
+
+        set newIcon(nIcon) {
+            this._icon = nIcon;
         }
 
     }
@@ -29,9 +37,15 @@ const projects = (() => {
 
     // Returns the index of the project
     function removeProject(id) {
-        console.log('removeProject method');
         projectList.splice(id, 1);
-        console.log(projectList);
+        console.log('new removed project, ', projectList);
+    }
+
+    function editProject(id, title, icon) {
+        console.log('enter editProject method');
+        const project = projectList[id];
+        project.newTitle = title;
+        project.newIcon = icon;
     }
 
     const getProjects = () => {
@@ -41,7 +55,7 @@ const projects = (() => {
 
     const getProjectLength = () => projectList.length;
 
-    return {addProject, removeProject, getProjects, getProjectLength}
+    return {addProject, removeProject, editProject, getProjects, getProjectLength}
 })();
 
 export default projects;
