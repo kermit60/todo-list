@@ -4,7 +4,7 @@ import projects from './projects';
 const handlers = (() => {
     const formTitle = document.querySelector('#project-dialog .form-title');
     const dialogSaveButton = document.querySelector('.project-submit > input');
-
+    const projectsTitle = document.querySelector('#delete-form > .project-deletion-text > b');
 
     const projectDialog = (() => {
         const dialogForm = document.querySelector('#project-dialog'); 
@@ -23,7 +23,11 @@ const handlers = (() => {
         }
 
         dialogSaveButton.addEventListener('click', () => {
-            dom.addProject();
+            const submitInput = document.querySelector('#project-form > .project-submit > input');
+            if (submitInput.value === 'Add') {
+                dom.addProject();
+            }
+            
         })
 
         dialogCloseButton.addEventListener('click', (e) => {
@@ -108,9 +112,10 @@ const handlers = (() => {
         const taskDelete = document.querySelector('.task-deletion-text');
         const projectDelete = document.querySelector('.project-deletion-text');
         const deleteButton = document.querySelector('#delete-form > .project-submit > input');
-
+        
         project.addEventListener('click', (e) => {
             console.log(e.target.parentElement.dataset.id);
+            
             // Alter title if project or task
             if (element === 'project') {
                 taskDelete.classList.add('hide');
@@ -125,16 +130,28 @@ const handlers = (() => {
                 title.textContent = 'Delete Task';
             }
             dialogForm.showModal();
-            
-            deleteButton.addEventListener('click', () => {
-                const projectDelete = e.target.parentElement;
-                console.log('Deleting', projectDelete);
-                projects.removeProject(projectDelete.dataset.id);
-                console.log(projects.getProjects())
-                dialogForm.close();
-                dom.loadProjects(projects.getProjects());
-            });
+
         })
+
+        deleteButton.addEventListener('click', () => {
+            // const projectLinkList = document.querySelectorAll('.project-link');
+            const projectLinks = document.querySelector('.project-links');
+
+            // using the .selected as a indicator of what's the id we can remove it from the DOM
+            for (let i = 0; i < projectLinks.childNodes.length; ++i) {
+                console.log(projectLinks.childNodes[i])
+                if (projectLinks.childNodes[i].classList.contains('selected')) {
+                    projects.removeProject(projectLinks.childNodes[i].dataset.id);
+                    projectLinks.removeChild(projectLinks.childNodes[i]);
+                    break;
+                }
+            }
+            
+            dom.setProjectIds();
+            dom.changeProjectCounter();
+            dialogForm.close();
+            
+        });
     };
 
     const makeEdit = (project) => {
@@ -167,14 +184,16 @@ const handlers = (() => {
                 
                 
                 formTitle.textContent = 'Edit project';
-                editIconButton.setAttribute('value', 'Edit');
+                editIconButton.value = 'Edit';
                 projectDialog.showModal();
 
-                // also get the correct icon selected
-
+                
+                // FIX FEATURE ON HOW TO EDIT THE PROJECTS
                 editIconButton.addEventListener('click', () => {
-                    const projectEdit = projectInput.value;
-
+                    // const projectEdit = projectInput.value;
+                    // const projectIcon = dom.findSelectedIcon();
+                    // projects.editProject(projectId, projectEdit, projectIcon);
+                    // dom.loadProjects(projects.getProjects());
                 })
 
             });

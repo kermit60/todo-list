@@ -37,8 +37,9 @@ const projects = (() => {
 
     // Returns the index of the project
     function removeProject(id) {
+        console.log('BEFORE REMOVAL', projectList);
         projectList.splice(id, 1);
-        console.log('new removed project, ', projectList);
+        console.log('BEFORE REMOVAL, ', projectList);
     }
 
     function editProject(id, title, icon) {

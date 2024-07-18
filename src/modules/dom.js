@@ -94,6 +94,15 @@ const dom = (() => {
         projectLinks.appendChild(link);
     }
 
+    const findSelectedIcon = () => {
+        for (const projectIcons of projectIconList) {
+            if (projectIcons.classList.contains('icon-selected')) {
+                return projectIcons.dataset.icon;
+            } 
+        }
+        return 'book';
+    }
+
     const addProject = () => {
         const title = projectTitle.value;
 
@@ -102,14 +111,7 @@ const dom = (() => {
             return;
         }
 
-        const findSelectedIcon = () => {
-            for (const projectIcons of projectIconList) {
-                if (projectIcons.classList.contains('icon-selected')) {
-                    return projectIcons.dataset.icon;
-                } 
-            }
-            return 'book';
-        }
+        
 
         const icon = findSelectedIcon();
 
@@ -200,7 +202,6 @@ const dom = (() => {
     }
 
     const setProjectIds = () => {
-        console.log('setting project Ids');
         const projectList = document.querySelectorAll('.project-edit');
 
         for (let i = 0; i < projectList.length; ++i) {
@@ -213,7 +214,9 @@ const dom = (() => {
         addProject, 
         resetProjectForm, 
         resetProjectIcons,
+        findSelectedIcon,
         changeProjectCounter, 
+        setProjectIds,
         loadProjects}
 })();
 
