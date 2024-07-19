@@ -34,7 +34,7 @@ const dom = (() => {
         sports: SportsIcon
     }
 
-    const createProject = (title, icon, id="") => {
+    const createProject = (title, icon) => {
         const pTitle = title;
 
         // if there's no value for title, don't make it
@@ -90,8 +90,7 @@ const dom = (() => {
         // add event handlers for the new 
         handlers.makeProjectHover(link);
         
-        
-        projectLinks.appendChild(link);
+        return link;
     }
 
     const findSelectedIcon = () => {
@@ -176,7 +175,9 @@ const dom = (() => {
             // console.log('keepings on repeating', project);
             const title = project.getTitle;
             const icon = project.getIcon;
-            createProject(title, icon);
+
+            const createdProject = createProject(title, icon);
+            projectLinks.appendChild(createdProject);
         }
         setProjectIds();
         changeProjectCounter();
@@ -210,11 +211,20 @@ const dom = (() => {
         }
     }
 
+    const findSelectedLink = () => {
+        for (let i = 0; i < projectLinks.childNodes.length; ++i) {
+            if (projectLinks.childNodes[i].classList.contains('selected')) {
+                return {project: projectLinks.childNodes[i], id:i};
+            }
+        }
+    }
+
     return {createProject,
         addProject, 
         resetProjectForm, 
         resetProjectIcons,
         findSelectedIcon,
+        findSelectedLink,
         changeProjectCounter, 
         setProjectIds,
         loadProjects}

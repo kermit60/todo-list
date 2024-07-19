@@ -5,6 +5,7 @@ const handlers = (() => {
     const formTitle = document.querySelector('#project-dialog .form-title');
     const dialogSaveButton = document.querySelector('.project-submit > input');
     const projectsTitle = document.querySelector('#delete-form > .project-deletion-text > b');
+    const projectLinks = document.querySelector('.project-links');
 
     const projectDialog = (() => {
         const dialogForm = document.querySelector('#project-dialog'); 
@@ -134,8 +135,6 @@ const handlers = (() => {
         })
 
         deleteButton.addEventListener('click', () => {
-            // const projectLinkList = document.querySelectorAll('.project-link');
-            const projectLinks = document.querySelector('.project-links');
 
             // using the .selected as a indicator of what's the id we can remove it from the DOM
             for (let i = 0; i < projectLinks.childNodes.length; ++i) {
@@ -160,12 +159,13 @@ const handlers = (() => {
         const formTitle = document.querySelector('#project-dialog .form-title');
         const editIconButton = document.querySelector('#project-form > .project-submit > input')
         const projectIcons = document.querySelectorAll('.project-icon');
+        const projectInput = document.querySelector('#project-title-value');
 
         const element = project.dataset.element;
         if (element === 'project') {
             project.addEventListener('click', (e) => {
                 const projectId = e.target.parentElement.dataset.id;
-                const projectInput = document.querySelector('#project-title-value');
+                
                 const projectTitle = e.target.parentElement.previousElementSibling.lastChild.textContent;
                 const projectIcon = projects.getProjects()[projectId].getIcon;
 
@@ -176,9 +176,9 @@ const handlers = (() => {
                 // presetting the form values to match the project values
                 projectInput.value = projectTitle;
                 dom.resetProjectIcons();
-                for (const project of projectIcons) {
-                    if (project.dataset.icon === projectIcon) {
-                        project.classList.add('icon-selected');
+                for (const p of projectIcons) {
+                    if (p.dataset.icon === projectIcon) {
+                        p.classList.add('icon-selected');
                     }
                 }
                 
@@ -188,22 +188,35 @@ const handlers = (() => {
                 projectDialog.showModal();
 
                 
-                // FIX FEATURE ON HOW TO EDIT THE PROJECTS
-                editIconButton.addEventListener('click', () => {
-                    // const projectEdit = projectInput.value;
-                    // const projectIcon = dom.findSelectedIcon();
-                    // projects.editProject(projectId, projectEdit, projectIcon);
-                    // dom.loadProjects(projects.getProjects());
-                })
-
             });
 
-            
+            // FIX FEATURE ON HOW TO EDIT THE PROJECTS
+            editIconButton.addEventListener('click', () => {
+                const newProjectTitle = projectInput.value ? projectInput.value : '';
+                const projectLink = dom.findSelectedLink();
+                const newProjectIcon = dom.findSelectedIcon();
+                const projectProject = projectLink ? projectLink.project : '';
+                const newProjectId = projectLink ? projectLink.id : -1;
+                console.log('whats the projectlink', projectLink);
+                console.log('Whats the type of projectlink', typeof projectLink);
+                if (projectLink) {
+                    const newProjectLink = dom.createProject(newProjectTitle, newProjectIcon);
+                    newProjectLink.classList.add('icon-selected')
+                    console.log(newProjectTitle, newProjectIcon, newProjectId, projectLink, newProjectLink);
+                    projects.editProject(newProjectId, newProjectTitle, newProjectIcon);
+                    projectLinks.replaceChild(newProjectLink, projectProject);
+                    dom.setProjectIds();
+                }
+
+                projectDialog.close();
+            })
 
         } else {
             project.addEventListener('click', () => {
                 taskDialog.showModal();
             });
+
+
         }
 
         
