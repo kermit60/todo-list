@@ -11,24 +11,24 @@
     <div id="container">
         <nav id="side-bar">
             <div id="menu-links">
-                <a href="#" class="menu-link link">
+                <a href="#" class="menu-link link" data-icon="all">
                     <img src="./assets/all-icon.svg" alt="menu-icon-all">
                     <p class="menu-link-title">All</p>
                 </a>
-                <a href="#" class="menu-link link">
-                    <img src="./assets/today-icon.svg" alt="menu-icon-all">
+                <a href="#" class="menu-link link" data-icon="today">
+                    <img src="./assets/today-icon.svg" alt="menu-icon-today">
                     <p class="menu-link-title">Today</p>
                 </a>
-                <a href="#" class="menu-link link">
-                    <img src="./assets/week-icon.svg" alt="menu-icon-all">
+                <a href="#" class="menu-link link" data-icon="week">
+                    <img src="./assets/week-icon.svg" alt="menu-icon-week">
                     <p class="menu-link-title">Week</p>
                 </a>
-                <a href="#" class="menu-link link">
-                    <img src="./assets/important-icon.svg" alt="menu-icon-all">
+                <a href="#" class="menu-link link" data-icon="important">
+                    <img src="./assets/important-icon.svg" alt="menu-icon-important">
                     <p class="menu-link-title">Important</p>
                 </a>
-                <a href="#" class="menu-link link">
-                    <img src="./assets/completed-icon.svg" alt="menu-icon-all">
+                <a href="#" class="menu-link link" data-icon="completed">
+                    <img src="./assets/completed-icon.svg" alt="menu-icon-complete">
                     <p class="menu-link-title">Completed</p>
                 </a>
             </div>
@@ -59,54 +59,59 @@
             </div>
         </nav>
         <main id="main">
-            <header class="main-header">
-                <img src="./assets/all-icon.svg" alt="all calendar icon">
-                <h1>All</h1>
-            </header>
-            <div id="task-header">
-                <p>Tasks (1)</p>
-                <img class="task-add-button" src="./assets/add-circle.svg" alt="add-icon">
-            </div>
-            <div id="task-list">
-                <div class="task-item">
-                    <div class="flex">
-                        <input type="checkbox" name="" id="">
-                        <p class="task-title">Something</p>
-                    </div>
-                    <div class="flex">
-                        <p class="date">2024-07-17</p>
-                        <img src="./assets/edit-icon.svg" alt="edit icon">
-                        <img src="./assets/delete-icon.svg" alt="">
-                        <img src="./assets/info-icon.svg" alt="">
-                    </div>
+            <div>
+                <header class="main-header">
+                    <img src="./assets/all-icon.svg" alt="all calendar icon">
+                    <h1>All</h1>
+                </header>
+                <div class="task-header">
+                    <p class="task-counter">Tasks (1)</p>
+                    <img class="task-add-button" src="./assets/add-circle.svg" alt="add-icon">
                 </div>
-                <div class="task-item">
-                    <div class="flex">
-                        <input type="checkbox" name="" id="">
-                        <p class="task-title">Something</p>
+            
+                <div class="task-list">
+                    <div class="task-item">
+                        <div class="flex">
+                            <input type="checkbox" name="" id="">
+                            <p class="task-title">Something</p>
+                        </div>
+                        <div class="flex">
+                            <p class="date">2024-07-17</p>
+                            <img src="./assets/edit-icon.svg" alt="edit icon">
+                            <img src="./assets/delete-icon.svg" alt="">
+                            <img src="./assets/info-icon.svg" alt="">
+                        </div>
                     </div>
-                    <div class="flex">
-                        <p class="date">2024-07-17</p>
-                        <img src="./assets/edit-icon.svg" alt="edit icon">
-                        <img src="./assets/delete-icon.svg" alt="">
-                        <img src="./assets/info-icon.svg" alt="">
+                    <div class="task-item">
+                        <div class="flex">
+                            <input type="checkbox" name="" id="">
+                            <p class="task-title">Something</p>
+                        </div>
+                        <div class="flex">
+                            <p class="date">2024-07-17</p>
+                            <img src="./assets/edit-icon.svg" alt="edit icon">
+                            <img src="./assets/delete-icon.svg" alt="">
+                            <img src="./assets/info-icon.svg" alt="">
+                        </div>
                     </div>
-                </div>
-                <div class="task-item">
-                    <div class="flex">
-                        <input type="checkbox" name="" id="">
-                        <p class="task-title">Something</p>
-                    </div>
-                    <div class="flex">
-                        <p class="date">2024-07-17</p>
-                        <img src="./assets/edit-icon.svg" alt="edit icon">
-                        <img src="./assets/delete-icon.svg" alt="">
-                        <img src="./assets/info-icon.svg" alt="">
+                    <div class="task-item">
+                        <div class="flex">
+                            <input type="checkbox" name="" id="">
+                            <p class="task-title">Something</p>
+                        </div>
+                        <div class="flex">
+                            <p class="date">2024-07-17</p>
+                            <img src="./assets/edit-icon.svg" alt="edit icon">
+                            <img src="./assets/delete-icon.svg" alt="">
+                            <img src="./assets/info-icon.svg" alt="">
+                        </div>
                     </div>
                 </div>
             </div>
         </main>
     </div>
+
+
     <dialog id="project-dialog">
         <h1 class="form-title">Add project</h1>
         <form id="project-form" action="" method="dialog">

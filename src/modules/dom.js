@@ -11,9 +11,10 @@ import TodayIcon from '../assets/today-icon.svg';
 import WeekIcon from '../assets/week-icon.svg';
 import ImportantIcon from '../assets/important-icon.svg';
 import CompleteIcon from '../assets/completed-icon.svg';
-
+import AddIcon from '../assets/add-circle.svg'
 
 import projects from './projects';
+import tasks from './tasks';
 import handlers from './handlers';
 
 
@@ -31,7 +32,12 @@ const dom = (() => {
         food: FoodIcon,
         gift: GiftIcon,
         shopping: ShoppingIcon,
-        sports: SportsIcon
+        sports: SportsIcon,
+        all: AllIcon,
+        today: TodayIcon,
+        week: WeekIcon,
+        important: ImportantIcon,
+        completed: CompleteIcon
     }
 
     const createProject = (title, icon) => {
@@ -124,7 +130,7 @@ const dom = (() => {
         const deleteIcon = new Image();
         //  GETTING PROJECT ELEMENTS READY
         link.setAttribute('href', '#');
-        link.classList.add('project-link', 'link');
+        link.classList.add('project-link', 'link', 'selected');
 
         projectContent.classList.add('project-content');
         projectEdit.classList.add('project-edit');
@@ -219,15 +225,69 @@ const dom = (() => {
         }
     }
 
-    return {createProject,
+    const resetSelected = () => {
+        for (let i = 0; i < projectLinks.childNodes.length; ++i) {
+            projectLinks.childNodes[i].classList.remove('selected');
+            
+        }
+    }
+
+    const createTaskHeader = (headerIcon, headerTitle, button=false) => {
+        const container = document.createElement('div');
+        const mainHeader = document.createElement('header');
+        const icon = new Image();
+        const title = document.createElement('h1');
+        const taskHeader = document.createElement('div');
+        const taskCounter = document.createElement('p');
+        const addTaskButton = new Image();
+        const taskList = document.createElement('div');
+
+        mainHeader.classList.add('main-header');
+        icon.src = iconList[headerIcon];
+        title.textContent = headerTitle;
+        mainHeader.appendChild(icon);
+        mainHeader.appendChild(title);
+
+        taskHeader.classList.add('task-header');
+        taskCounter.classList.add('task-counter');
+        taskCounter.textContent = 'Tasks (1)';
+
+        addTaskButton.src = AddIcon;
+        addTaskButton.classList.add('task-add-button');
+        taskHeader.appendChild(taskCounter);
+
+        if (button) {
+            taskHeader.appendChild(addTaskButton);
+        }
+
+        taskList.classList.add('task-list');
+
+        container.appendChild(mainHeader);
+        container.appendChild(taskHeader);
+        container.appendChild(taskList);
+
+        return container;
+
+    }
+
+    const populateTasks = (taskList) => {
+        
+    }
+
+
+    return {
+        createProject,
         addProject, 
         resetProjectForm, 
         resetProjectIcons,
+        resetSelected,
         findSelectedIcon,
         findSelectedLink,
         changeProjectCounter, 
         setProjectIds,
-        loadProjects}
+        loadProjects,
+        createTaskHeader
+    }
 })();
 
 

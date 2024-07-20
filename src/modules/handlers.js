@@ -6,6 +6,7 @@ const handlers = (() => {
     const dialogSaveButton = document.querySelector('.project-submit > input');
     const projectsTitle = document.querySelector('#delete-form > .project-deletion-text > b');
     const projectLinks = document.querySelector('.project-links');
+    const mainContent = document.getElementById('main');
 
     const projectDialog = (() => {
         const dialogForm = document.querySelector('#project-dialog'); 
@@ -26,6 +27,7 @@ const handlers = (() => {
         dialogSaveButton.addEventListener('click', () => {
             const submitInput = document.querySelector('#project-form > .project-submit > input');
             if (submitInput.value === 'Add') {
+                dom.resetSelected();
                 dom.addProject();
             }
             
@@ -65,9 +67,15 @@ const handlers = (() => {
         const sidebarLinks = document.querySelectorAll('.link');
 
         for (let link of sidebarLinks) {
+            // console.log('SIDEBAR LINKS', link);
             link.addEventListener('click', () => {
                 reset();
                 link.classList.add('selected');
+                mainContent.textContent = '';
+                const linkIcon = link.dataset.icon;
+                const linkTitle = linkIcon[0].toUpperCase() + linkIcon.substring(1);
+                mainContent.appendChild(dom.createTaskHeader(linkIcon, linkTitle));
+
             });
 
             link.addEventListener('mouseover', () => {
@@ -89,9 +97,21 @@ const handlers = (() => {
     })();
    
     const makeProjectHover = (project) => {
-        project.addEventListener('click', () => {
+        project.addEventListener('click', (e) => {
+            
             menuLinks.reset();
             project.classList.add('selected');
+            // THIS IS WHERE YOU MAKE THE PROJECTHEADERS AND STUFF
+            // need to add the project IDS with the headers and stuff ids
+            
+            mainContent.textContent = '';
+            
+            const projectId = project.childNodes[1].dataset.id;
+            console.log(project, 'id', projectId);
+            const p = projects.getProject(projectId);
+            console.log(p, projects.getProject(projectId));
+            mainContent.appendChild(dom.createTaskHeader(p._icon, p._title, true));
+
         });
 
         project.addEventListener('mouseover', () => {
@@ -135,17 +155,19 @@ const handlers = (() => {
         })
 
         deleteButton.addEventListener('click', () => {
-
             // using the .selected as a indicator of what's the id we can remove it from the DOM
             for (let i = 0; i < projectLinks.childNodes.length; ++i) {
-                console.log(projectLinks.childNodes[i])
+                console.log('WTF IS THIS', projectLinks.childNodes[i]);
                 if (projectLinks.childNodes[i].classList.contains('selected')) {
-                    projects.removeProject(projectLinks.childNodes[i].dataset.id);
+                    console.log(projects.getProjects());
+                    console.log('DELETING LINK', projectLinks.childNodes[i].childNodes[1].dataset.id)
+                    projects.removeProject(projectLinks.childNodes[i].childNodes[1].dataset.id);
                     projectLinks.removeChild(projectLinks.childNodes[i]);
                     break;
                 }
             }
             
+            mainContent.textContent = '';
             dom.setProjectIds();
             dom.changeProjectCounter();
             dialogForm.close();
@@ -167,7 +189,8 @@ const handlers = (() => {
                 const projectId = e.target.parentElement.dataset.id;
                 
                 const projectTitle = e.target.parentElement.previousElementSibling.lastChild.textContent;
-                const projectIcon = projects.getProjects()[projectId].getIcon;
+                // THERE'S A WEIRD INTERACTION WITH _ICON AND ICON
+                const projectIcon = projects.getProject(projectId).getIcon;
 
                 console.log(e.target.parentElement)
                 console.log(title);
@@ -197,14 +220,16 @@ const handlers = (() => {
                 const newProjectIcon = dom.findSelectedIcon();
                 const projectProject = projectLink ? projectLink.project : '';
                 const newProjectId = projectLink ? projectLink.id : -1;
-                console.log('whats the projectlink', projectLink);
-                console.log('Whats the type of projectlink', typeof projectLink);
+                // console.log('whats the projectlink', projectLink);
+                // console.log('Whats the type of projectlink', typeof projectLink);
                 if (projectLink) {
                     const newProjectLink = dom.createProject(newProjectTitle, newProjectIcon);
                     newProjectLink.classList.add('icon-selected')
-                    console.log(newProjectTitle, newProjectIcon, newProjectId, projectLink, newProjectLink);
+                    // console.log(newProjectTitle, newProjectIcon, newProjectId, projectLink, newProjectLink);
                     projects.editProject(newProjectId, newProjectTitle, newProjectIcon);
                     projectLinks.replaceChild(newProjectLink, projectProject);
+                    mainContent.textContent = '';
+                    mainContent.appendChild(dom.createTaskHeader(newProjectIcon, newProjectTitle, true));
                     dom.setProjectIds();
                 }
 
