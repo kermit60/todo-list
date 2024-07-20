@@ -172,10 +172,10 @@ const dom = (() => {
         console.log('gets to loadProjects', list);
         projectLinks.textContent = '';
         for (const project of list) {
-            // console.log('keepings on repeating', project);
-            const title = project.getTitle;
-            const icon = project.getIcon;
-
+            // WHEN YOU CONVERT IT A STRING IT DOESN'T BECOME A CLASS JUST A NORMAL OBJECT
+            const title = project._title;
+            const icon = project._icon;
+            
             const createdProject = createProject(title, icon);
             projectLinks.appendChild(createdProject);
         }

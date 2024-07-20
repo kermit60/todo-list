@@ -1,14 +1,14 @@
 import dom from './dom';
 
 const projects = (() => {
-    
+    let projectList = [];
     class Project {
         constructor (icon, title) {
             this._icon = icon;
             this._title = title;
         }
 
-        get getTitle() {
+        get title() {
             return this._title;
         }
 
@@ -16,7 +16,7 @@ const projects = (() => {
             this._title = nTitle;
         }
 
-        get getIcon() {
+        get icon() {
             return this._icon;
         }
 
@@ -26,12 +26,23 @@ const projects = (() => {
 
     }
 
-    const projectList = [new Project('sports', 'Sports schedule'), new Project('book', 'Reading schedule')];
+    if (localStorage.getItem('projects') === null) {
+        console.log('local storage is NULL')
+        projectList = [new Project('sports', 'Sports schedule'), new Project('book', 'Reading schedule')]
+        console.log(projectList);
+    } else {
+        console.log('THIS IS NOT NULL');
+        const projectsFromStorage = JSON.parse(localStorage.getItem('projects'));
+        projectList = projectsFromStorage;
+    }
+
 
     function addProject(icon, title) {
         const project = new Project(icon, title);
         projectList.push(project);
         dom.changeProjectCounter(project.length);
+        localStorage.setItem('projects', JSON.stringify(projectList));
+
         return project;
     }
 
@@ -40,6 +51,7 @@ const projects = (() => {
         console.log('BEFORE REMOVAL', projectList);
         projectList.splice(id, 1);
         console.log('BEFORE REMOVAL, ', projectList);
+        localStorage.setItem('projects', JSON.stringify(projectList));
     }
 
     function editProject(id, title, icon) {
@@ -47,12 +59,12 @@ const projects = (() => {
         const project = projectList[id];
         project.newTitle = title;
         project.newIcon = icon;
+        localStorage.setItem('projects', JSON.stringify(projectList));
     }
 
     const getProjects = () => {
         return projectList;
     }
-
 
     const getProjectLength = () => projectList.length;
 
