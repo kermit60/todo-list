@@ -1,5 +1,6 @@
 import dom from './dom';
 import projects from './projects';
+import tasks from './tasks';
 
 const handlers = (() => {
     const formTitle = document.querySelector('#project-dialog .form-title');
@@ -7,6 +8,7 @@ const handlers = (() => {
     const projectsTitle = document.querySelector('#delete-form > .project-deletion-text > b');
     const projectLinks = document.querySelector('.project-links');
     const mainContent = document.getElementById('main');
+    const taskList = document.querySelector('#main > #task-list');
 
     const projectDialog = (() => {
         const dialogForm = document.querySelector('#project-dialog'); 
@@ -48,20 +50,7 @@ const handlers = (() => {
 
     })();
 
-    const taskDialog = (() => {
-        const dialogForm = document.querySelector('#task-dialog'); 
-        const dialogCloseButton = document.querySelector('.task-close-dialog');
-        const dialogShowButton = document.querySelector('.task-add-button'); 
 
-        dialogCloseButton.addEventListener('click', (e) => {
-            e.preventDefault();
-            dialogForm.close();
-        })
-
-        dialogShowButton.addEventListener('click', () => {
-            dialogForm.showModal();
-        })
-    })();
 
     const menuLinks = (() => {
         const sidebarLinks = document.querySelectorAll('.link');
@@ -71,11 +60,12 @@ const handlers = (() => {
             link.addEventListener('click', () => {
                 reset();
                 link.classList.add('selected');
-                mainContent.textContent = '';
                 const linkIcon = link.dataset.icon;
                 const linkTitle = linkIcon[0].toUpperCase() + linkIcon.substring(1);
-                mainContent.appendChild(dom.createTaskHeader(linkIcon, linkTitle));
-
+                taskList.textContent = '';
+                dom.changeTaskHeader(linkIcon, linkTitle);
+                dom.loadTasks(tasks.getMenuTasks(linkIcon), taskList);
+                dom.changeTaskCounter(tasks.getMenuTasksLength(linkIcon));
             });
 
             link.addEventListener('mouseover', () => {
@@ -101,16 +91,19 @@ const handlers = (() => {
             
             menuLinks.reset();
             project.classList.add('selected');
-            // THIS IS WHERE YOU MAKE THE PROJECTHEADERS AND STUFF
             // need to add the project IDS with the headers and stuff ids
-            
-            mainContent.textContent = '';
-            
+
             const projectId = project.childNodes[1].dataset.id;
-            console.log(project, 'id', projectId);
             const p = projects.getProject(projectId);
-            console.log(p, projects.getProject(projectId));
-            mainContent.appendChild(dom.createTaskHeader(p._icon, p._title, true));
+            console.log(p);
+            dom.changeTaskHeader(p._icon, p._title, true, projectId);
+            // LOADING THE TASKS
+            
+            console.log('TASKLIST SSSS', taskList);
+            taskList.textContent = '';
+            dom.loadTasks(tasks.getProjectTasks(projectId), taskList);
+            // change the tasks counter
+            dom.changeTaskCounter(tasks.getProjectTasksLength(projectId));
 
         });
 
@@ -167,7 +160,6 @@ const handlers = (() => {
                 }
             }
             
-            mainContent.textContent = '';
             dom.setProjectIds();
             dom.changeProjectCounter();
             dialogForm.close();
@@ -228,8 +220,10 @@ const handlers = (() => {
                     // console.log(newProjectTitle, newProjectIcon, newProjectId, projectLink, newProjectLink);
                     projects.editProject(newProjectId, newProjectTitle, newProjectIcon);
                     projectLinks.replaceChild(newProjectLink, projectProject);
-                    mainContent.textContent = '';
-                    mainContent.appendChild(dom.createTaskHeader(newProjectIcon, newProjectTitle, true));
+                    
+                    // NEED TO CHANGE TASKHEADER
+                    
+                    dom.changeTaskHeader(newProjectIcon, newProjectTitle, true, newProjectId);
                     dom.setProjectIds();
                 }
 
@@ -247,7 +241,56 @@ const handlers = (() => {
         
     }
 
-    return {makeProjectHover, makeDelete, makeEdit};
+
+    const addTaskDialog = (() => {
+        const dialogForm = document.querySelector('#task-dialog'); 
+        const dialogCloseButton = document.querySelector('.task-close-dialog');
+        const dialogAddButton = document.querySelector('#task-form > .task-submit > input');
+        const button = document.querySelector('.task-add-button');
+
+        // GETTING ALL THE VALUES NEEDED FOR THE FORM
+        const titleInput = document.querySelector('#task-form  #title');
+        const descriptionInput = document.querySelector('#task-form #description');
+        const dueDateInput = document.querySelector('#task-form #dueDate');
+        const priorityInput = document.querySelector('#task-form #priority');
+        
+
+        dialogAddButton.addEventListener('click', (e) => {
+            console.log(e.target);
+            const projectId = document.querySelector('#main > #task-list');
+            const taskLink = document.querySelector('#main > #task-list');
+            // task.addTask();
+            const title = titleInput.value;
+            const description = descriptionInput.value;
+            const dueDate = dueDateInput.value;
+            const priority = priorityInput.value;
+            const id = projectId.dataset.id;
+            console.log(titleInput.value);
+            console.log(descriptionInput.value);
+            console.log(dueDateInput.value);
+            console.log(priorityInput.value);
+            tasks.addProjectTask(title, description, dueDate, priority, id);
+            taskLink.appendChild(dom.createTaskItem({title, description, dueDate, priority}));
+        })
+
+        dialogCloseButton.addEventListener('click', (e) => {
+            e.preventDefault();
+            dialogForm.close();
+        })
+
+        button.addEventListener('click', () => {
+            dialogForm.showModal();
+        })
+    })();
+
+
+
+    return {
+        makeProjectHover, 
+        makeDelete,
+        makeEdit,
+        addTaskDialog
+    };
 })();
 
 export default handlers;

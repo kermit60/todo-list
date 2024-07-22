@@ -33,24 +33,72 @@ const tasks = (() => {
         getPriority() {
             return this.priority;
         }
+
         setPriority(newPriority) {
             this.priority = newPriority;
         }
 
     }
     // indexed projects have it's task storages
-    let allTasks = {'0': [new Task()]};
-    
+    let projectTasks = [[new Task('testing1',  'description1', '2024-07-17', 'test priority1'), new Task('testing1',  'description1', '2024-07-17', 'test priority1'), new Task('testing1',  'description1', '2024-07-17', 'test priority1')],
+                    [new Task('testing2',  'description2', '2024-07-17', 'test priority2'), new Task('testing2',  'description2', '2024-07-17', 'test priority2')],
+                    [new Task('testing3',  'description3', '2024-07-17', 'test priority3')]
+                    ];
+
+    let allTasks = [];
+    let todayTasks = [];
+    let weekTasks = [];
+    let importantTasks = [];
+    let completedTask = [];
+
+    const menuArrDict = {
+        all: allTasks,
+        today: todayTasks,
+        week: weekTasks,
+        important: importantTasks,
+        completed: completedTask
+    } 
+
     if (localStorage.getItem('tasks') === null) {
         console.log('TASKS local storage is NULL');
 
 
     }
 
-    
+    const addProjectTask = (title, description, dueDate, priority, id) => {
+        const task = new Task(title, description, dueDate, priority);
+        projectTasks[id].push(task);
 
+    }
 
+    const removeProjectTask = (projectId, taskId) => {
 
+    }
+
+    const getMenuTasks = (menu) => {
+        return menuArrDict[menu];
+    }
+
+    const getProjectTasks = (id) => {
+        return projectTasks[id];
+    }
+
+    const getProjectTasksLength = (id) => {
+        return projectTasks[id].length;
+    }
+
+    const getMenuTasksLength = menu => {
+        return menuArrDict[menu].length;
+    }
+
+    return {
+        addProjectTask,
+        removeProjectTask,
+        getProjectTasks,
+        getMenuTasks,
+        getProjectTasksLength,
+        getMenuTasksLength
+    }
 
 })();
 

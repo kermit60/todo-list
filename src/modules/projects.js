@@ -2,6 +2,7 @@ import dom from './dom';
 
 const projects = (() => {
     let projectList = [];
+    
     class Project {
         constructor (icon, title) {
             this._icon = icon;

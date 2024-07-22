@@ -59,54 +59,30 @@
             </div>
         </nav>
         <main id="main">
-            <div>
-                <header class="main-header">
-                    <img src="./assets/all-icon.svg" alt="all calendar icon">
-                    <h1>All</h1>
-                </header>
-                <div class="task-header">
-                    <p class="task-counter">Tasks (1)</p>
-                    <img class="task-add-button" src="./assets/add-circle.svg" alt="add-icon">
-                </div>
-            
-                <div class="task-list">
-                    <div class="task-item">
-                        <div class="flex">
-                            <input type="checkbox" name="" id="">
-                            <p class="task-title">Something</p>
-                        </div>
-                        <div class="flex">
-                            <p class="date">2024-07-17</p>
-                            <img src="./assets/edit-icon.svg" alt="edit icon">
-                            <img src="./assets/delete-icon.svg" alt="">
-                            <img src="./assets/info-icon.svg" alt="">
-                        </div>
+            <header id="main-header">
+                <img src="./assets/all-icon.svg" alt="all calendar icon">
+                <h1>All</h1>
+            </header>
+            <div id="task-header">
+                <p class="task-counter">Tasks (0)</p>
+                <img class="task-add-button hide" src="./assets/add-circle.svg" alt="add-icon">
+            </div>
+        
+            <div id="task-list">
+                <!-- TASK ITEMS -->
+                <!-- <div class="task-item">
+                    <div class="flex">
+                        <input type="checkbox" name="" id="">
+                        <p class="task-title">Something</p>
                     </div>
-                    <div class="task-item">
-                        <div class="flex">
-                            <input type="checkbox" name="" id="">
-                            <p class="task-title">Something</p>
-                        </div>
-                        <div class="flex">
-                            <p class="date">2024-07-17</p>
-                            <img src="./assets/edit-icon.svg" alt="edit icon">
-                            <img src="./assets/delete-icon.svg" alt="">
-                            <img src="./assets/info-icon.svg" alt="">
-                        </div>
+                    <div class="flex">
+                        <p class="date">2024-07-17</p>
+                        <img src="./assets/edit-icon.svg" alt="edit icon">
+                        <img src="./assets/delete-icon.svg" alt="">
+                        <img src="./assets/info-icon.svg" alt="">
                     </div>
-                    <div class="task-item">
-                        <div class="flex">
-                            <input type="checkbox" name="" id="">
-                            <p class="task-title">Something</p>
-                        </div>
-                        <div class="flex">
-                            <p class="date">2024-07-17</p>
-                            <img src="./assets/edit-icon.svg" alt="edit icon">
-                            <img src="./assets/delete-icon.svg" alt="">
-                            <img src="./assets/info-icon.svg" alt="">
-                        </div>
-                    </div>
-                </div>
+                </div> -->
+                
             </div>
         </main>
     </div>
@@ -134,7 +110,7 @@
         </form>
     </dialog> 
     <dialog id="task-dialog">
-        <h1 class="form-title">Add project</h1>
+        <h1 class="form-title">Add Task</h1>
         <form id="task-form" action="" method="dialog">
             <div>
                 <label for="title">Title<span style="color: red;">*</span></label>
@@ -153,7 +129,7 @@
                 <select name="priority" id="priority">
                     <option value="">How important is this task?</option>
                     <option value="not-important">Meh, Not important</option>
-                    <option value="little-important">A little important</option>
+                    <option value="a-bit-important">A little important</option>
                     <option value="important">Very important</option>
                 </select>
             </div>

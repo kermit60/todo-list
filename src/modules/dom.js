@@ -11,7 +11,8 @@ import TodayIcon from '../assets/today-icon.svg';
 import WeekIcon from '../assets/week-icon.svg';
 import ImportantIcon from '../assets/important-icon.svg';
 import CompleteIcon from '../assets/completed-icon.svg';
-import AddIcon from '../assets/add-circle.svg'
+import AddIcon from '../assets/add-circle.svg';
+import InfoIcon from '../assets/info-icon.svg';
 
 import projects from './projects';
 import tasks from './tasks';
@@ -232,48 +233,93 @@ const dom = (() => {
         }
     }
 
-    const createTaskHeader = (headerIcon, headerTitle, button=false) => {
-        const container = document.createElement('div');
-        const mainHeader = document.createElement('header');
-        const icon = new Image();
-        const title = document.createElement('h1');
-        const taskHeader = document.createElement('div');
-        const taskCounter = document.createElement('p');
-        const addTaskButton = new Image();
-        const taskList = document.createElement('div');
+    const changeTaskHeader = (headerIcon, headerTitle, button=false, id='') => {
+        const mainHeader = document.querySelector('#main-header');
+        const iconImage = document.querySelector('#main-header > img');
+        const title = document.querySelector('#main-header > h1');
+        const counter = document.querySelector('#task-header > p');
+        const addButton = document.querySelector('#task-header > img');
 
-        mainHeader.classList.add('main-header');
-        icon.src = iconList[headerIcon];
+        const taskList = document.querySelector('#task-list');
+
         title.textContent = headerTitle;
-        mainHeader.appendChild(icon);
-        mainHeader.appendChild(title);
-
-        taskHeader.classList.add('task-header');
-        taskCounter.classList.add('task-counter');
-        taskCounter.textContent = 'Tasks (1)';
-
-        addTaskButton.src = AddIcon;
-        addTaskButton.classList.add('task-add-button');
-        taskHeader.appendChild(taskCounter);
-
+        iconImage.src = iconList[headerIcon];
+        
+        taskList.setAttribute('data-id', id);
         if (button) {
-            taskHeader.appendChild(addTaskButton);
+            addButton.classList.remove('hide');
+        } else {
+            addButton.classList.add('hide');
         }
 
-        taskList.classList.add('task-list');
+    }
 
-        container.appendChild(mainHeader);
-        container.appendChild(taskHeader);
-        container.appendChild(taskList);
+    const createTaskItem = (taskItem) => {
+        const title = taskItem.title;
+        const dueDate = taskItem.dueDate;
+        
+        // OUTER CONTAINER
+        const container = document.createElement('div');
+        container.classList.add('task-item');
+
+        // CHECKBOX
+        const itemTitle = document.createElement('div');
+        itemTitle.classList.add('flex');
+        const completedInput = document.createElement('input');
+        completedInput.setAttribute('type', 'checkbox');
+        const taskTitle = document.createElement('p');
+        taskTitle.classList.add('task-title');
+        taskTitle.textContent = title;
+        itemTitle.appendChild(completedInput);
+        itemTitle.appendChild(taskTitle);
+
+        // DATE AND EDITING AND DELETING BUTTONS
+        const controls = document.createElement('div');
+        controls.classList.add('flex');
+        const date = document.createElement('p');
+        date.classList.add('date');
+        date.textContent = dueDate;
+
+        // ICONS
+        const edit = new Image();
+        edit.src = EditIcon;
+        const deleteIcon = new Image();
+        deleteIcon.src = DeleteIcon;
+        const info = new Image();
+        info.src = InfoIcon;
+        controls.appendChild(date);
+        controls.appendChild(edit);
+        controls.appendChild(deleteIcon);
+        controls.appendChild(info);
+
+        // BUILDING THE ITEM
+        container.appendChild(itemTitle);
+        container.appendChild(controls);
 
         return container;
 
     }
 
-    const populateTasks = (taskList) => {
+    const setTaskIds = () => {
+        // get the values from the form and append at the end / reset the form,
+        
         
     }
 
+    const resetTaskForm = () => {
+
+    }
+
+    const loadTasks = (tasksArray, domTaskList) => {
+        tasksArray.forEach((task, index) => {
+            domTaskList.appendChild(createTaskItem(task, index));
+        })
+    }
+
+    const changeTaskCounter = (length) => {
+        const taskCounter = document.querySelector('.task-counter');
+        taskCounter.textContent = `Tasks (${length})`;
+    }
 
     return {
         createProject,
@@ -284,9 +330,13 @@ const dom = (() => {
         findSelectedIcon,
         findSelectedLink,
         changeProjectCounter, 
+        changeTaskCounter,
         setProjectIds,
+        setTaskIds,
         loadProjects,
-        createTaskHeader
+        loadTasks,
+        changeTaskHeader,
+        createTaskItem
     }
 })();
 

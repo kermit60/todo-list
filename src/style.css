@@ -95,7 +95,7 @@
 
 .project-edit img:hover,
 .flex img:hover,
-.task-header > img:hover,
+#task-header > img:hover,
 .project-title > img:hover {
     transform: translateY(-2px);
     cursor: pointer;
@@ -163,12 +163,12 @@
     width: clamp(250px, 65%, 750px);
 }
 
-.main-header > img {
+#main-header > img {
     height: 40px;
     width: 40px;
 }
 
-.main-header {
+#main-header {
     display: flex;
     justify-content: center;
     align-items: center;
@@ -179,14 +179,14 @@ h1 {
     font-weight: 300;
 }
 
-.task-header {
+#task-header {
     display: flex;
     justify-content: space-between;
     border-bottom: solid black 1px;
     padding: 10px 15px;
 }
 
-.task-list {
+#task-list {
     display: flex;
     flex-direction: column;
 }
