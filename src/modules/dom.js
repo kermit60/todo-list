@@ -261,7 +261,7 @@ const dom = (() => {
         // OUTER CONTAINER
         const container = document.createElement('div');
         container.classList.add('task-item');
-
+        handlers.makeTasksHover(container);
         // CHECKBOX
         const itemTitle = document.createElement('div');
         itemTitle.classList.add('flex');
@@ -283,8 +283,14 @@ const dom = (() => {
         // ICONS
         const edit = new Image();
         edit.src = EditIcon;
+        // add edit handler
+        handlers.makeTaskEdit(edit);
+
         const deleteIcon = new Image();
         deleteIcon.src = DeleteIcon;
+        // add deletion handler
+        handlers.makeTaskDelete(deleteIcon, title);
+
         const info = new Image();
         info.src = InfoIcon;
         controls.appendChild(date);
@@ -300,14 +306,28 @@ const dom = (() => {
 
     }
 
+    // CALL AFTER LOADING TASKS ADDING TASKS REMOVING TASKS
     const setTaskIds = () => {
         // get the values from the form and append at the end / reset the form,
-        
+        const taskList = document.querySelectorAll('#task-list > .task-item');
+        const taskListId = document.querySelector('#task-list').dataset.id;
+        console.log(taskList);
+
+        for (let i = 0; i < tasks.getProjectTasksLength(taskListId); ++i) {
+            taskList[i].setAttribute('data-id', i);
+        }
         
     }
 
     const resetTaskForm = () => {
-
+        const titleInput = document.querySelector('#task-form  #title');
+        const descriptionInput = document.querySelector('#task-form #description');
+        const dueDateInput = document.querySelector('#task-form #dueDate');
+        const priorityInput = document.querySelector('#task-form #priority');
+        titleInput.value = '';
+        descriptionInput.value = '';
+        dueDateInput.value = '';
+        priorityInput.selectedIndex = 0;
     }
 
     const loadTasks = (tasksArray, domTaskList) => {
@@ -321,12 +341,20 @@ const dom = (() => {
         taskCounter.textContent = `Tasks (${length})`;
     }
 
+    const resetTaskSelected = () => {
+        const taskItems = document.querySelectorAll('.task-item');
+        for (const task of taskItems) {
+            task.classList.remove('task-selected');
+        }
+    }
+
     return {
         createProject,
         addProject, 
         resetProjectForm, 
         resetProjectIcons,
         resetSelected,
+        resetTaskSelected,
         findSelectedIcon,
         findSelectedLink,
         changeProjectCounter, 
@@ -336,7 +364,8 @@ const dom = (() => {
         loadProjects,
         loadTasks,
         changeTaskHeader,
-        createTaskItem
+        createTaskItem,
+        resetTaskForm
     }
 })();
 

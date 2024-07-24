@@ -31,6 +31,7 @@ const handlers = (() => {
             if (submitInput.value === 'Add') {
                 dom.resetSelected();
                 dom.addProject();
+                tasks.addProject();
             }
             
         })
@@ -66,6 +67,7 @@ const handlers = (() => {
                 dom.changeTaskHeader(linkIcon, linkTitle);
                 dom.loadTasks(tasks.getMenuTasks(linkIcon), taskList);
                 dom.changeTaskCounter(tasks.getMenuTasksLength(linkIcon));
+                
             });
 
             link.addEventListener('mouseover', () => {
@@ -104,7 +106,7 @@ const handlers = (() => {
             dom.loadTasks(tasks.getProjectTasks(projectId), taskList);
             // change the tasks counter
             dom.changeTaskCounter(tasks.getProjectTasksLength(projectId));
-
+            dom.setTaskIds();
         });
 
         project.addEventListener('mouseover', () => {
@@ -125,7 +127,7 @@ const handlers = (() => {
         const projectName = document.querySelector('.project-deletion-text > b');
         const taskDelete = document.querySelector('.task-deletion-text');
         const projectDelete = document.querySelector('.project-deletion-text');
-        const deleteButton = document.querySelector('#delete-form > .project-submit > input');
+        const deleteProjectButton = document.querySelector('#delete-form > .project-submit > input');
         
         project.addEventListener('click', (e) => {
             console.log(e.target.parentElement.dataset.id);
@@ -147,23 +149,28 @@ const handlers = (() => {
 
         })
 
-        deleteButton.addEventListener('click', () => {
-            // using the .selected as a indicator of what's the id we can remove it from the DOM
-            for (let i = 0; i < projectLinks.childNodes.length; ++i) {
-                console.log('WTF IS THIS', projectLinks.childNodes[i]);
-                if (projectLinks.childNodes[i].classList.contains('selected')) {
-                    console.log(projects.getProjects());
-                    console.log('DELETING LINK', projectLinks.childNodes[i].childNodes[1].dataset.id)
-                    projects.removeProject(projectLinks.childNodes[i].childNodes[1].dataset.id);
-                    projectLinks.removeChild(projectLinks.childNodes[i]);
-                    break;
+        deleteProjectButton.addEventListener('click', () => {
+            // IF ITS A PROJECT DELETE OR NOT
+            if (!projectDelete.classList.contains('hide')) {
+                // using the .selected as a indicator of what's the id we can remove it from the DOM
+                for (let i = 0; i < projectLinks.childNodes.length; ++i) {
+                    console.log('WTF IS THIS', projectLinks.childNodes[i]);
+                    if (projectLinks.childNodes[i].classList.contains('selected')) {
+                        console.log(projects.getProjects());
+                        console.log('DELETING LINK', projectLinks.childNodes[i].childNodes[1].dataset.id)
+                        const id = projectLinks.childNodes[i].childNodes[1].dataset.id;
+                        projects.removeProject(id);
+                        projectLinks.removeChild(projectLinks.childNodes[i]);
+                        tasks.removeProject(id);
+                        break;
+                    }
                 }
+
+                dom.setProjectIds();
+                dom.changeProjectCounter();
+                dom.changeTaskHeader('book', '');
+                dialogForm.close();
             }
-            
-            dom.setProjectIds();
-            dom.changeProjectCounter();
-            dialogForm.close();
-            
         });
     };
 
@@ -231,13 +238,8 @@ const handlers = (() => {
             })
 
         } else {
-            project.addEventListener('click', () => {
-                taskDialog.showModal();
-            });
-
-
+            taskDialog.showModal();
         }
-
         
     }
 
@@ -269,8 +271,12 @@ const handlers = (() => {
             console.log(descriptionInput.value);
             console.log(dueDateInput.value);
             console.log(priorityInput.value);
-            tasks.addProjectTask(title, description, dueDate, priority, id);
-            taskLink.appendChild(dom.createTaskItem({title, description, dueDate, priority}));
+            // IF THE INPUTS AREN'T EMPTY
+            if (title && description && dueDate && priority) {
+                tasks.addProjectTask(title, description, dueDate, priority, id);
+                taskLink.appendChild(dom.createTaskItem({title, description, dueDate, priority}));
+                dom.setTaskIds();
+            }
         })
 
         dialogCloseButton.addEventListener('click', (e) => {
@@ -279,15 +285,71 @@ const handlers = (() => {
         })
 
         button.addEventListener('click', () => {
+            dom.resetTaskForm();
             dialogForm.showModal();
         })
     })();
 
+    // TASK HOVERING EFFECT 
+    const makeTasksHover = (taskItem) => {
+        taskItem.addEventListener('click', () => {
+            dom.resetTaskSelected();
+            taskItem.classList.add('task-selected');
+        })
 
+    }
+
+    const makeTaskDelete = (taskDeleteIcon, name='') => {
+        const deleteDialog = document.querySelector('#delete-dialog');
+        const title = document.querySelector('#delete-dialog > .form-title');
+        const taskName = document.querySelector('#delete-form > .task-deletion-text > b');
+        const taskLabel = document.querySelector('.task-deletion-text')
+        const deleteButton = document.querySelector('#delete-form > .project-submit > input');
+
+        taskDeleteIcon.addEventListener('click', () => {
+            document.querySelector('.project-deletion-text').classList.add('hide');
+            taskLabel.classList.remove('hide');
+
+            title.textContent = 'Delete Task';
+            taskName.textContent = name;
+
+            deleteDialog.showModal();
+        })
+
+        deleteButton.addEventListener('click', (e) => {
+            // FIND THE SELECTED TASK
+            const taskList = document.querySelector('#task-list');
+            if (!taskLabel.classList.contains('hide')) {
+                for (let i = 0; i < taskList.childNodes.length; ++i) {
+                    if (taskList.childNodes[i].classList.contains('task-selected')) {
+                        const taskId = taskList.childNodes[i].dataset.id;
+                        console.log(taskList.childNodes[i]);
+                        console.log(taskId);
+                        tasks.removeProjectTask(taskList.dataset.id, taskId);
+                        taskList.removeChild(taskList.childNodes[i]);
+    
+                        dom.changeTaskCounter(tasks.getProjectTasksLength(taskList.dataset.id));
+    
+                        break;
+                    }
+                }
+                
+                dom.setTaskIds();
+            }
+        })
+
+    }
+
+    const makeTaskEdit = (taskEditIcon) => {
+
+    }
 
     return {
         makeProjectHover, 
+        makeTasksHover,
         makeDelete,
+        makeTaskDelete,
+        makeTaskEdit,
         makeEdit,
         addTaskDialog
     };

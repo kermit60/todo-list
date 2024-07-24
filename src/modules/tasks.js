@@ -71,8 +71,19 @@ const tasks = (() => {
 
     }
 
-    const removeProjectTask = (projectId, taskId) => {
+    const removeProject = (id) => {
+        projectTasks.splice(id, 1);
 
+    }
+
+    const addProject = () => {
+        projectTasks.push([]);
+    }
+
+    const removeProjectTask = (projectId, taskId) => {
+        console.log('REMOVED TASK', projectTasks[projectId][taskId]);
+        projectTasks[projectId].splice(taskId, 1);
+        
     }
 
     const getMenuTasks = (menu) => {
@@ -94,6 +105,8 @@ const tasks = (() => {
     return {
         addProjectTask,
         removeProjectTask,
+        addProject,
+        removeProject,
         getProjectTasks,
         getMenuTasks,
         getProjectTasksLength,
