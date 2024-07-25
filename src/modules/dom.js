@@ -267,6 +267,17 @@ const dom = (() => {
         itemTitle.classList.add('flex');
         const completedInput = document.createElement('input');
         completedInput.setAttribute('type', 'checkbox');
+        if (taskItem._checked) {
+            completedInput.checked = true;
+            itemTitle.classList.add('checked');
+        } else {
+            completedInput.checked = false;
+        }
+        
+        
+
+        handlers.checked(completedInput);
+
         const taskTitle = document.createElement('p');
         taskTitle.classList.add('task-title');
         taskTitle.textContent = title;

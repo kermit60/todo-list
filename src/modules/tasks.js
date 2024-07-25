@@ -5,6 +5,7 @@ const tasks = (() => {
             this._description = description;
             this._dueDate = dueDate;
             this._priority = priority;
+            this._checked = false;
         }
 
         getTitle() {
@@ -40,19 +41,20 @@ const tasks = (() => {
 
     }
     let projectTasks;
+    let completedTasks;
 
     let allTasks = [];
     let todayTasks = [];
     let weekTasks = [];
     let importantTasks = [];
-    let completedTask = [];
+    
 
     const menuArrDict = {
         all: allTasks,
         today: todayTasks,
         week: weekTasks,
         important: importantTasks,
-        completed: completedTask
+        completed: completedTasks
     } 
 
     if (localStorage.getItem('tasks') === null) {
@@ -61,7 +63,9 @@ const tasks = (() => {
         [new Task('testing2',  'description2', '2024-07-17', 'not-important'), new Task('testing2',  'description2', '2024-07-17', 'not-important')],
         [new Task('testing3',  'description3', '2024-07-17', 'important')]
         ];
+
         localStorage.setItem('tasks', JSON.stringify(projectTasks));
+        
     } else {
         const taskStorage = JSON.parse(localStorage.getItem('tasks'));
         projectTasks = taskStorage;
@@ -125,7 +129,27 @@ const tasks = (() => {
         return projectTasks[id];
     }
 
-    
+    const getCompletedTasks = () => {
+        projectTasks = JSON.parse(localStorage.getItem('tasks'));
+        console.log(completedTasks);
+        localStorage.setItem('tasks', JSON.stringify(projectTasks));
+        return completedTasks;
+    }
+
+    const addCompleted = (projectId, taskId) => {
+        projectTasks = JSON.parse(localStorage.getItem('tasks'));
+        projectTasks[projectId][taskId]._checked = true;
+        console.log('CHECKED', projectTasks[projectId][taskId]);
+        localStorage.setItem('tasks', JSON.stringify(projectTasks));
+    }
+
+    const removeCompleted = (projectId, taskId) => {
+        projectTasks = JSON.parse(localStorage.getItem('tasks'));
+        projectTasks[projectId][taskId]._checked = false;
+        console.log('REMOVED CHECK', projectTasks[projectId][taskId]);
+        localStorage.setItem('tasks', JSON.stringify(projectTasks));
+    }
+
 
     const getProjectTasksLength = (id) => {
         if (!projectTasks[id]) {
@@ -143,11 +167,14 @@ const tasks = (() => {
         addProjectTask,
         removeProjectTask,
         addProject,
+        addCompleted,
         removeProject,
+        removeCompleted,
         editProjectTask,
         getProjectTasks,
         getProjectTask,
         getMenuTasks,
+        getCompletedTasks,
         getProjectTasksLength,
         getMenuTasksLength
     }

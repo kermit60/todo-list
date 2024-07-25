@@ -287,7 +287,7 @@ const handlers = (() => {
             if (title && description && dueDate && priority && addButton.value === 'Add') {
                 tasks.addProjectTask(title, description, dueDate, priority, id);
                 taskLink.appendChild(dom.createTaskItem({
-                    _title: title, _description: description, _dueDate: dueDate, _priority: priority
+                    _title: title, _description: description, _dueDate: dueDate, _priority: priority, _checked: false
                 }));
                 dom.setTaskIds();
             }
@@ -452,6 +452,27 @@ const handlers = (() => {
         });
     }
 
+    const checked = (checkbox) => {
+        checkbox.addEventListener('click', (e) => {
+            console.log(e.target.parentElement);
+            const taskId = e.target.parentElement.parentElement.dataset.id;
+            const projectId = taskList.dataset.id;
+
+            if (e.target.checked) {
+                // ADD TO COMPLETED
+                console.log('checked');
+                tasks.addCompleted(projectId, taskId);
+                e.target.parentElement.classList.add('checked'); 
+            } else {
+                // REMOVE FROM COMPLETED
+                tasks.removeCompleted(projectId, taskId);
+                e.target.parentElement.classList.remove('checked');
+            }
+            
+             
+        });
+    }
+
     return {
         makeProjectHover, 
         makeTasksHover,
@@ -460,6 +481,7 @@ const handlers = (() => {
         makeTaskEdit,
         makeEdit,
         makeInfo,
+        checked,
         addTaskDialog
     };
 })();

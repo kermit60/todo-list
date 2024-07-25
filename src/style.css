@@ -387,3 +387,7 @@ select {
     font-size: 14px;   
     min-height: 0;
 }
+
+.checked {
+    text-decoration: line-through;
+}
