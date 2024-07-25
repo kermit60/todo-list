@@ -59,6 +59,7 @@ const handlers = (() => {
         for (let link of sidebarLinks) {
             // console.log('SIDEBAR LINKS', link);
             link.addEventListener('click', () => {
+
                 reset();
                 link.classList.add('selected');
                 const linkIcon = link.dataset.icon;
@@ -168,7 +169,16 @@ const handlers = (() => {
 
                 dom.setProjectIds();
                 dom.changeProjectCounter();
-                dom.changeTaskHeader('book', '');
+                // REDIRECT BACK TO THE ALL MENULINK (first menulink)
+                menuLinks.reset();
+                const links = document.querySelector('#menu-links');
+                console.log(links.childNodes[1]);
+                links.childNodes[1].classList.add('selected');
+                taskList.textContent = '';
+                dom.loadTasks(tasks.getMenuTasks('all'), taskList);
+                dom.changeTaskCounter(tasks.getMenuTasksLength('all'));
+                dom.changeTaskHeader('all', 'All');
+
                 dialogForm.close();
             }
         });
@@ -192,7 +202,6 @@ const handlers = (() => {
                 const projectIcon = projects.getProject(projectId).getIcon;
 
                 console.log(e.target.parentElement)
-                console.log(title);
                 console.log(projectIcon);
 
                 // presetting the form values to match the project values
@@ -248,7 +257,9 @@ const handlers = (() => {
         const dialogForm = document.querySelector('#task-dialog'); 
         const dialogCloseButton = document.querySelector('.task-close-dialog');
         const dialogAddButton = document.querySelector('#task-form > .task-submit > input');
+        const formTitle = document.querySelector('#task-dialog .form-title');
         const button = document.querySelector('.task-add-button');
+        const addButton = document.querySelector('#task-form > .task-submit > input');
 
         // GETTING ALL THE VALUES NEEDED FOR THE FORM
         const titleInput = document.querySelector('#task-form  #title');
@@ -259,6 +270,7 @@ const handlers = (() => {
 
         dialogAddButton.addEventListener('click', (e) => {
             console.log(e.target);
+            
             const projectId = document.querySelector('#main > #task-list');
             const taskLink = document.querySelector('#main > #task-list');
             // task.addTask();
@@ -272,9 +284,11 @@ const handlers = (() => {
             console.log(dueDateInput.value);
             console.log(priorityInput.value);
             // IF THE INPUTS AREN'T EMPTY
-            if (title && description && dueDate && priority) {
+            if (title && description && dueDate && priority && addButton.value === 'Add') {
                 tasks.addProjectTask(title, description, dueDate, priority, id);
-                taskLink.appendChild(dom.createTaskItem({title, description, dueDate, priority}));
+                taskLink.appendChild(dom.createTaskItem({
+                    _title: title, _description: description, _dueDate: dueDate, _priority: priority
+                }));
                 dom.setTaskIds();
             }
         })
@@ -286,6 +300,8 @@ const handlers = (() => {
 
         button.addEventListener('click', () => {
             dom.resetTaskForm();
+            formTitle.textContent = 'Add Task';
+            addButton.value = 'Add';
             dialogForm.showModal();
         })
     })();
@@ -341,7 +357,99 @@ const handlers = (() => {
     }
 
     const makeTaskEdit = (taskEditIcon) => {
+        const dialogForm = document.querySelector('#task-dialog'); 
+        const formTitle = document.querySelector('#task-dialog > .form-title');
+        const dialogCloseButton = document.querySelector('.task-close-dialog');
+        const dialogAddButton = document.querySelector('#task-form > .task-submit > input');
+        const editButton = document.querySelector('#task-form > .task-submit > input');
 
+        // GETTING ALL THE VALUES NEEDED FOR THE FORM
+        const titleInput = document.querySelector('#task-form  #title');
+        const descriptionInput = document.querySelector('#task-form #description');
+        const dueDateInput = document.querySelector('#task-form #dueDate');
+        const priorityInput = document.querySelector('#task-form #priority');
+
+        taskEditIcon.addEventListener('click', (e) => {
+            console.log(e.target.parentElement.parentElement);
+            const taskItem = e.target.parentElement.parentElement;
+            const taskItemId = taskItem.dataset.id;
+            const taskListId = taskList.dataset.id;
+            const task = tasks.getProjectTask(taskListId, taskItemId);
+
+            const title = task._title;
+            const description = task._description;
+            const dueDate = task._dueDate;
+            const priority = task._priority;
+            console.log('AOSUFHAOUFHAOISFHASOIFH', title, description, dueDate, priority);
+            
+            titleInput.value = title;
+            descriptionInput.value = description;
+            dueDateInput.value = dueDate;
+            priorityInput.value = priority;
+            
+
+            formTitle.textContent = "Edit Task";
+            dialogAddButton.value = 'Edit';
+            dialogForm.showModal();
+        });
+
+        editButton.addEventListener('click', () => {
+            // get the selected task so we can replace with
+            const selectedTask = dom.findSelectedTask();
+            const selectedTaskId = selectedTask ? selectedTask.id : '';
+            const selectedTaskDom = selectedTask ? selectedTask['task']: '';
+            
+            console.log(selectedTask);
+
+            const title = titleInput.value;
+            const description = descriptionInput.value;
+            const dueDate = dueDateInput.value;
+            const priority = priorityInput.value;
+
+            if (title && description && dueDate && priority && selectedTask) {
+                const taskListId = taskList.dataset.id;
+                tasks.editProjectTask(title, description, dueDate, priority, taskListId, selectedTaskId);
+                const newTask = dom.createTaskItem(tasks.getProjectTask(taskListId, selectedTaskId));
+                newTask.classList.add('task-selected');
+                taskList.replaceChild(newTask, selectedTaskDom);
+                dom.setTaskIds();
+            }
+
+        })
+
+
+    }
+
+    const makeInfo = (infoTaskIcon) => {
+        const displayDialog = document.querySelector('#display-dialog');
+        const closeButton = document.querySelector('#display-dialog .task-submit > button');
+        const displayDescription = document.querySelectorAll(".display-description");
+
+        infoTaskIcon.addEventListener('click', (e) => {
+            console.log(e.target.parentElement.parentElement);
+            console.log(displayDescription);
+            // get the selected task so we can replace with
+            const selectedTaskId = e.target.parentElement.parentElement.dataset.id;
+            const taskListId = taskList.dataset.id;
+            const task = selectedTaskId ? tasks.getProjectTask(taskListId, selectedTaskId) : '';
+            const project = projects.getProject(taskListId)._title;
+            console.log(task);
+
+            displayDescription[0].textContent = task._title;
+            displayDescription[1].textContent = task._description;
+            displayDescription[2].textContent = task._dueDate;
+            displayDescription[3].textContent = task._priority;
+            displayDescription[4].textContent = project;
+
+            displayDialog.showModal();
+        })
+
+        closeButton.addEventListener('click', (e) => {
+            e.preventDefault();
+
+
+            displayDialog.close();
+        });
     }
 
     return {
@@ -351,6 +459,7 @@ const handlers = (() => {
         makeTaskDelete,
         makeTaskEdit,
         makeEdit,
+        makeInfo,
         addTaskDialog
     };
 })();

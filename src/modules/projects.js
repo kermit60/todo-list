@@ -29,7 +29,7 @@ const projects = (() => {
 
     if (localStorage.getItem('projects') === null) {
         console.log('local storage is NULL')
-        projectList = [new Project('sports', 'Sports schedule'), new Project('book', 'Reading schedule')]
+        projectList = [new Project('sports', 'Sports schedule'), new Project('book', 'Reading schedule'), new Project('book', 'Reading schedule')]
         localStorage.setItem('projects', JSON.stringify(projectList));
     } else {
         console.log('THIS IS NOT NULL');
@@ -49,7 +49,7 @@ const projects = (() => {
 
     // Returns the index of the project
     function removeProject(id) {
-        projectList = JSON.parse(localStorage.getItem('projects'))
+        projectList = JSON.parse(localStorage.getItem('projects'));
         console.log('BEFORE REMOVAL', projectList);
         projectList.splice(id, 1);
 

@@ -255,8 +255,8 @@ const dom = (() => {
     }
 
     const createTaskItem = (taskItem) => {
-        const title = taskItem.title;
-        const dueDate = taskItem.dueDate;
+        const title = taskItem._title;
+        const dueDate = taskItem._dueDate;
         
         // OUTER CONTAINER
         const container = document.createElement('div');
@@ -293,6 +293,8 @@ const dom = (() => {
 
         const info = new Image();
         info.src = InfoIcon;
+        handlers.makeInfo(info);
+
         controls.appendChild(date);
         controls.appendChild(edit);
         controls.appendChild(deleteIcon);
@@ -331,6 +333,10 @@ const dom = (() => {
     }
 
     const loadTasks = (tasksArray, domTaskList) => {
+        if (!tasksArray) {
+            return;
+        }
+
         tasksArray.forEach((task, index) => {
             domTaskList.appendChild(createTaskItem(task, index));
         })
@@ -345,6 +351,15 @@ const dom = (() => {
         const taskItems = document.querySelectorAll('.task-item');
         for (const task of taskItems) {
             task.classList.remove('task-selected');
+        }
+    }
+
+    const findSelectedTask = () => {
+        const taskList = document.querySelector('#task-list');
+        for (let i = 0; i < taskList.childNodes.length; ++i) {
+            if (taskList.childNodes[i].classList.contains('task-selected')) {
+                return {task: taskList.childNodes[i], id:i};
+            }
         }
     }
 
@@ -365,7 +380,8 @@ const dom = (() => {
         loadTasks,
         changeTaskHeader,
         createTaskItem,
-        resetTaskForm
+        resetTaskForm,
+        findSelectedTask
     }
 })();
 
