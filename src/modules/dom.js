@@ -213,7 +213,7 @@ const dom = (() => {
         const projectList = document.querySelectorAll('.project-edit');
 
         for (let i = 0; i < projectList.length; ++i) {
-            projectList[i].setAttribute('data-id', `${i}`);
+            projectList[i].setAttribute('data-project-id', `${i}`);
             console.log('project', i, projectList[i]);
         }
     }
@@ -245,7 +245,7 @@ const dom = (() => {
         title.textContent = headerTitle;
         iconImage.src = iconList[headerIcon];
         
-        taskList.setAttribute('data-id', id);
+        taskList.setAttribute('data-project-id', id);
         if (button) {
             addButton.classList.remove('hide');
         } else {
@@ -253,7 +253,7 @@ const dom = (() => {
         }
 
     }
-
+  
     const createTaskItem = (taskItem) => {
         const title = taskItem._title;
         const dueDate = taskItem._dueDate;
@@ -323,11 +323,12 @@ const dom = (() => {
     const setTaskIds = () => {
         // get the values from the form and append at the end / reset the form,
         const taskList = document.querySelectorAll('#task-list > .task-item');
-        const taskListId = document.querySelector('#task-list').dataset.id;
+        const taskListId = document.querySelector('#task-list').dataset.projectId;
         console.log(taskList);
 
         for (let i = 0; i < tasks.getProjectTasksLength(taskListId); ++i) {
-            taskList[i].setAttribute('data-id', i);
+            taskList[i].setAttribute('data-project-id', taskListId);
+            taskList[i].setAttribute('data-task-id', i);
         }
         
     }
@@ -348,8 +349,11 @@ const dom = (() => {
             return;
         }
 
-        tasksArray.forEach((task, index) => {
-            domTaskList.appendChild(createTaskItem(task, index));
+        tasksArray.forEach((task) => {
+            const taskItem = createTaskItem(task);
+            taskItem.setAttribute('data-project-id', task._projectId);
+            taskItem.setAttribute('data-task-id', task._taskId);
+            domTaskList.appendChild(taskItem);
         })
     }
 

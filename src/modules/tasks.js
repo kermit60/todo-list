@@ -58,16 +58,27 @@ const tasks = (() => {
         completed: completedTasks
     } 
 
+    const setIds = () => {
+        projectTasks.forEach((arr, projectId) => {
+            arr.forEach((task, taskId) => {
+                task._projectId = projectId;
+                task._taskId = taskId;
+            });
+        });
+    }
+
     const getMenuTasks = (menu) => {
+        setIds();
         menuArrDict[menu] = [];
         const array = menuArrDict[menu];
         const todaysDate = format(new Date(), "yyyy-MM-dd");
         
         if (menu === 'all') {
-            projectTasks.forEach(arr => {
-                for (const task of arr) {
+            // CHANGE TO INDEXES AND ADD NEW PROPERTIES FOR IDS
+            projectTasks.forEach((arr) => {
+                arr.forEach((task) => {
                     array.push(task);
-                }
+                });
             });
         } else if (menu === 'today') {
             projectTasks.forEach(arr => {
@@ -116,16 +127,19 @@ const tasks = (() => {
         ];
 
         localStorage.setItem('tasks', JSON.stringify(projectTasks));
-        
+        setIds();
     } else {
         const taskStorage = JSON.parse(localStorage.getItem('tasks'));
         projectTasks = taskStorage;
+        setIds();
     }
 
     const addProjectTask = (title, description, dueDate, priority, id) => {
         const task = new Task(title, description, dueDate, priority);
         projectTasks[id].push(task);
+        setIds();
         localStorage.setItem('tasks', JSON.stringify(projectTasks));
+        
     }
 
     const editProjectTask = (title, description, dueDate, priority, projectId, taskId) => {
@@ -143,11 +157,13 @@ const tasks = (() => {
         projectTasks[projectId][taskId]._dueDate = dueDate;
         projectTasks[projectId][taskId]._priority = priority;
         console.log('NEW EDITED PROJECT LIST', projectTasks[projectId]);
+        setIds();
         localStorage.setItem('tasks', JSON.stringify(projectTasks));
     }
 
     const removeProject = (id) => {
         projectTasks.splice(id, 1);
+        setIds();
         localStorage.setItem('tasks', JSON.stringify(projectTasks));
     }
 
@@ -156,6 +172,7 @@ const tasks = (() => {
         console.log('ADDING A PROJECT BEFORE', projectTasks);
         projectTasks.push([]);
         console.log('ADDING A PROJECT AFTER', projectTasks);
+        setIds();
         localStorage.setItem('tasks', JSON.stringify(projectTasks));
     }
 
@@ -163,6 +180,7 @@ const tasks = (() => {
         projectTasks = JSON.parse(localStorage.getItem('tasks'))
         console.log('REMOVED TASK', projectTasks[projectId][taskId]);
         projectTasks[projectId].splice(taskId, 1);
+        setIds();
         localStorage.setItem('tasks', JSON.stringify(projectTasks));
     }
 
@@ -189,6 +207,7 @@ const tasks = (() => {
         projectTasks = JSON.parse(localStorage.getItem('tasks'));
         projectTasks[projectId][taskId]._checked = true;
         console.log('CHECKED', projectTasks[projectId][taskId]);
+        setIds();
         localStorage.setItem('tasks', JSON.stringify(projectTasks));
     }
 
@@ -196,6 +215,7 @@ const tasks = (() => {
         projectTasks = JSON.parse(localStorage.getItem('tasks'));
         projectTasks[projectId][taskId]._checked = false;
         console.log('REMOVED CHECK', projectTasks[projectId][taskId]);
+        setIds();
         localStorage.setItem('tasks', JSON.stringify(projectTasks));
     }
 
@@ -225,7 +245,8 @@ const tasks = (() => {
         getMenuTasks,
         getCompletedTasks,
         getProjectTasksLength,
-        getMenuTasksLength
+        getMenuTasksLength,
+        setIds
     }
 
 })();

@@ -96,7 +96,7 @@ const handlers = (() => {
             project.classList.add('selected');
             // need to add the project IDS with the headers and stuff ids
 
-            const projectId = project.childNodes[1].dataset.id;
+            const projectId = project.childNodes[1].dataset.projectId;
             const p = projects.getProject(projectId);
             console.log(p);
             dom.changeTaskHeader(p._icon, p._title, true, projectId);
@@ -104,10 +104,11 @@ const handlers = (() => {
             
             console.log('TASKLIST SSSS', taskList);
             taskList.textContent = '';
+            tasks.setIds();
             dom.loadTasks(tasks.getProjectTasks(projectId), taskList);
             // change the tasks counter
             dom.changeTaskCounter(tasks.getProjectTasksLength(projectId));
-            dom.setTaskIds();
+            // dom.setTaskIds();
         });
 
         project.addEventListener('mouseover', () => {
@@ -131,7 +132,7 @@ const handlers = (() => {
         const deleteProjectButton = document.querySelector('#delete-form > .project-submit > input');
         
         project.addEventListener('click', (e) => {
-            console.log(e.target.parentElement.dataset.id);
+            console.log(e.target.parentElement.dataset.projectId);
             
             // Alter title if project or task
             if (element === 'project') {
@@ -158,8 +159,8 @@ const handlers = (() => {
                     console.log('WTF IS THIS', projectLinks.childNodes[i]);
                     if (projectLinks.childNodes[i].classList.contains('selected')) {
                         console.log(projects.getProjects());
-                        console.log('DELETING LINK', projectLinks.childNodes[i].childNodes[1].dataset.id)
-                        const id = projectLinks.childNodes[i].childNodes[1].dataset.id;
+                        console.log('DELETING LINK', projectLinks.childNodes[i].childNodes[1].dataset.projectId)
+                        const id = projectLinks.childNodes[i].childNodes[1].dataset.projectId;
                         projects.removeProject(id);
                         projectLinks.removeChild(projectLinks.childNodes[i]);
                         tasks.removeProject(id);
@@ -195,7 +196,7 @@ const handlers = (() => {
         const element = project.dataset.element;
         if (element === 'project') {
             project.addEventListener('click', (e) => {
-                const projectId = e.target.parentElement.dataset.id;
+                const projectId = e.target.parentElement.dataset.projectId;
                 
                 const projectTitle = e.target.parentElement.previousElementSibling.lastChild.textContent;
                 // THERE'S A WEIRD INTERACTION WITH _ICON AND ICON
@@ -278,7 +279,7 @@ const handlers = (() => {
             const description = descriptionInput.value;
             const dueDate = dueDateInput.value;
             const priority = priorityInput.value;
-            const id = projectId.dataset.id;
+            const id = projectId.dataset.projectId;
             console.log(titleInput.value);
             console.log(descriptionInput.value);
             console.log(dueDateInput.value);
@@ -286,9 +287,10 @@ const handlers = (() => {
             // IF THE INPUTS AREN'T EMPTY
             if (title && description && dueDate && priority && addButton.value === 'Add') {
                 tasks.addProjectTask(title, description, dueDate, priority, id);
-                taskLink.appendChild(dom.createTaskItem({
+                const task = dom.createTaskItem({
                     _title: title, _description: description, _dueDate: dueDate, _priority: priority, _checked: false
-                }));
+                })
+                taskLink.appendChild(task);
                 dom.setTaskIds();
             }
         })
@@ -338,13 +340,14 @@ const handlers = (() => {
             if (!taskLabel.classList.contains('hide')) {
                 for (let i = 0; i < taskList.childNodes.length; ++i) {
                     if (taskList.childNodes[i].classList.contains('task-selected')) {
-                        const taskId = taskList.childNodes[i].dataset.id;
+                        const taskId = taskList.childNodes[i].dataset.taskId;
                         console.log(taskList.childNodes[i]);
                         console.log(taskId);
-                        tasks.removeProjectTask(taskList.dataset.id, taskId);
+
+                        tasks.removeProjectTask(taskList.dataset.projectId, taskId);
                         taskList.removeChild(taskList.childNodes[i]);
     
-                        dom.changeTaskCounter(tasks.getProjectTasksLength(taskList.dataset.id));
+                        dom.changeTaskCounter(tasks.getProjectTasksLength(taskList.dataset.projectId));
     
                         break;
                     }
@@ -372,8 +375,8 @@ const handlers = (() => {
         taskEditIcon.addEventListener('click', (e) => {
             console.log(e.target.parentElement.parentElement);
             const taskItem = e.target.parentElement.parentElement;
-            const taskItemId = taskItem.dataset.id;
-            const taskListId = taskList.dataset.id;
+            const taskItemId = taskItem.dataset.taskId;
+            const taskListId = taskList.dataset.projectId;
             const task = tasks.getProjectTask(taskListId, taskItemId);
 
             const title = task._title;
@@ -407,12 +410,13 @@ const handlers = (() => {
             const priority = priorityInput.value;
 
             if (title && description && dueDate && priority && selectedTask) {
-                const taskListId = taskList.dataset.id;
+                const taskListId = taskList.dataset.taskId;
                 tasks.editProjectTask(title, description, dueDate, priority, taskListId, selectedTaskId);
                 const newTask = dom.createTaskItem(tasks.getProjectTask(taskListId, selectedTaskId));
                 newTask.classList.add('task-selected');
                 taskList.replaceChild(newTask, selectedTaskDom);
-                dom.setTaskIds();
+                // dom.setTaskIds();
+                tasks.setIds();
             }
 
         })
@@ -429,8 +433,8 @@ const handlers = (() => {
             console.log(e.target.parentElement.parentElement);
             console.log(displayDescription);
             // get the selected task so we can replace with
-            const selectedTaskId = e.target.parentElement.parentElement.dataset.id;
-            const taskListId = taskList.dataset.id;
+            const selectedTaskId = e.target.parentElement.parentElement.dataset.taskId;
+            const taskListId = taskList.dataset.projectId;
             const task = selectedTaskId ? tasks.getProjectTask(taskListId, selectedTaskId) : '';
             const project = projects.getProject(taskListId)._title;
             console.log(task);
@@ -454,13 +458,15 @@ const handlers = (() => {
 
     const checked = (checkbox) => {
         checkbox.addEventListener('click', (e) => {
-            console.log(e.target.parentElement);
-            const taskId = e.target.parentElement.parentElement.dataset.id;
-            const projectId = taskList.dataset.id;
+            const task = e.target.parentElement.parentElement;
+            const taskId = task.dataset.taskId;
+            const projectId = task.dataset.projectId;
 
+            console.log(task, projectId, taskId);
             if (e.target.checked) {
                 // ADD TO COMPLETED
                 console.log('checked');
+
                 tasks.addCompleted(projectId, taskId);
                 e.target.parentElement.classList.add('checked'); 
             } else {
