@@ -1,3 +1,5 @@
+import {format, isThisWeek} from "date-fns";
+
 const tasks = (() => {
     class Task {
         constructor(title, description, dueDate, priority) {
@@ -41,13 +43,12 @@ const tasks = (() => {
 
     }
     let projectTasks;
-    let completedTasks;
 
     let allTasks = [];
     let todayTasks = [];
     let weekTasks = [];
     let importantTasks = [];
-    
+    let completedTasks = [];
 
     const menuArrDict = {
         all: allTasks,
@@ -56,6 +57,56 @@ const tasks = (() => {
         important: importantTasks,
         completed: completedTasks
     } 
+
+    const getMenuTasks = (menu) => {
+        menuArrDict[menu] = [];
+        const array = menuArrDict[menu];
+        const todaysDate = format(new Date(), "yyyy-MM-dd");
+        
+        if (menu === 'all') {
+            projectTasks.forEach(arr => {
+                for (const task of arr) {
+                    array.push(task);
+                }
+            });
+        } else if (menu === 'today') {
+            projectTasks.forEach(arr => {
+                for (const task of arr) {
+                    if (task._dueDate === todaysDate) {
+                        array.push(task);
+                    }
+                    
+                }
+            });
+        } else if (menu === 'week') {
+            projectTasks.forEach(arr => {
+                for (const task of arr) {
+                    if (isThisWeek(task._dueDate)) {
+                        array.push(task);
+                    }
+                    
+                }
+            });
+        } else if (menu === 'important') {
+            projectTasks.forEach(arr => {
+                for (const task of arr) {
+                    if (task._priority === 'important') {
+                        array.push(task);
+                    }
+                }
+            });
+        } else {
+            projectTasks.forEach(arr => {
+                for (const task of arr) {
+                    if (task._checked) {
+                        array.push(task);
+                    }
+                }
+            });
+        }
+
+        return array;
+    }
 
     if (localStorage.getItem('tasks') === null) {
         console.log('TASKS local storage is NULL');
@@ -121,9 +172,7 @@ const tasks = (() => {
         
     }
 
-    const getMenuTasks = (menu) => {
-        return menuArrDict[menu];
-    }
+   
 
     const getProjectTasks = (id) => {
         return projectTasks[id];
