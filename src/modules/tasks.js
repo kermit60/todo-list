@@ -68,23 +68,23 @@ const tasks = (() => {
     }
 
     const getMenuTasks = (menu) => {
+        projectTasks = JSON.parse(localStorage.getItem('tasks'));
         setIds();
         menuArrDict[menu] = [];
-        const array = menuArrDict[menu];
         const todaysDate = format(new Date(), "yyyy-MM-dd");
         
         if (menu === 'all') {
             // CHANGE TO INDEXES AND ADD NEW PROPERTIES FOR IDS
             projectTasks.forEach((arr) => {
                 arr.forEach((task) => {
-                    array.push(task);
+                    menuArrDict[menu].push(task);
                 });
             });
         } else if (menu === 'today') {
             projectTasks.forEach(arr => {
                 for (const task of arr) {
                     if (task._dueDate === todaysDate) {
-                        array.push(task);
+                        menuArrDict[menu].push(task);
                     }
                     
                 }
@@ -93,7 +93,7 @@ const tasks = (() => {
             projectTasks.forEach(arr => {
                 for (const task of arr) {
                     if (isThisWeek(task._dueDate)) {
-                        array.push(task);
+                        menuArrDict[menu].push(task);
                     }
                     
                 }
@@ -102,7 +102,7 @@ const tasks = (() => {
             projectTasks.forEach(arr => {
                 for (const task of arr) {
                     if (task._priority === 'important') {
-                        array.push(task);
+                        menuArrDict[menu].push(task);
                     }
                 }
             });
@@ -110,13 +110,13 @@ const tasks = (() => {
             projectTasks.forEach(arr => {
                 for (const task of arr) {
                     if (task._checked) {
-                        array.push(task);
+                        menuArrDict[menu].push(task);
                     }
                 }
             });
         }
 
-        return array;
+        return menuArrDict[menu];
     }
 
     if (localStorage.getItem('tasks') === null) {
@@ -143,8 +143,7 @@ const tasks = (() => {
     }
 
     const editProjectTask = (title, description, dueDate, priority, projectId, taskId) => {
-        projectTasks = JSON.parse(localStorage.getItem('tasks'))
-        console.log('EDITING TASK');
+        projectTasks = JSON.parse(localStorage.getItem('tasks'));
         /*
             CLASSIC WITH CLASS EDITING
             projectTasks[projectId][taskId].setTitle(title);
@@ -229,6 +228,7 @@ const tasks = (() => {
     }
 
     const getMenuTasksLength = menu => {
+        console.log(menuArrDict[menu].length);
         return menuArrDict[menu].length;
     }
 

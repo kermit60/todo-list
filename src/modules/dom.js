@@ -173,6 +173,10 @@ const dom = (() => {
         changeProjectCounter();
         projectLinks.appendChild(link);
         setProjectIds();
+        const taskList = document.querySelector('#task-list');
+        taskList.textContent = '';
+        loadTasks(tasks.getProjectTasks((projects.getProjects().length - 1)), taskList);
+        changeTaskCounter(0);
     }
 
     const loadProjects = (list) => {
@@ -214,7 +218,7 @@ const dom = (() => {
 
         for (let i = 0; i < projectList.length; ++i) {
             projectList[i].setAttribute('data-project-id', `${i}`);
-            console.log('project', i, projectList[i]);
+            // console.log('project', i, projectList[i]);
         }
     }
 
@@ -324,7 +328,7 @@ const dom = (() => {
         // get the values from the form and append at the end / reset the form,
         const taskList = document.querySelectorAll('#task-list > .task-item');
         const taskListId = document.querySelector('#task-list').dataset.projectId;
-        console.log(taskList);
+        // console.log(taskList);
 
         for (let i = 0; i < tasks.getProjectTasksLength(taskListId); ++i) {
             taskList[i].setAttribute('data-project-id', taskListId);
@@ -370,10 +374,11 @@ const dom = (() => {
     }
 
     const findSelectedTask = () => {
-        const taskList = document.querySelector('#task-list');
-        for (let i = 0; i < taskList.childNodes.length; ++i) {
-            if (taskList.childNodes[i].classList.contains('task-selected')) {
-                return {task: taskList.childNodes[i], id:i};
+        const taskList = document.querySelectorAll('.task-item');
+        for (const task of taskList) {
+            // console.log(taskList.childNodes[i]);
+            if (task.classList.contains('task-selected')) {
+                return task;
             }
         }
     }
