@@ -1,45 +1,233 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>To-do list</title>
-    <link rel="all-icon" href="./assets/all-icon.svg">
-</head>
-<body>
+    <link rel="all-icon" href="./assets/all-icon.svg" />
+  </head>
+  <body>
     <header id="header">TO-DO LIST</header>
     <div id="container">
-        <nav id="side-bar">
-            <div id="menu-links">
-                <a href="#" class="menu-link">
-                    <img src="assets/all-icon.21c8956e24c00bcc2540.svg" alt="menu-icon-all">
-                    <p class="menu-link-title">All</p>
-                </a>
-                <a href="#" class="menu-link">Today</a>
-                <a href="#" class="menu-link">Week</a>
-                <a href="#" class="menu-link">Important</a>
-                <a href="#" class="menu-link">Completed</a>
-            </div>
-            <div id="menu-projects">
-                <div class="project-title">
-                    Projects (2)
-                </div>
-                <div class="project-links">
-                    <a href="#" class="project-link">Random</a>
-                    <a href="#" class="project-link">Random</a>
-                </div>
-                <footer id="project-footer">
-                    <p class="">Made by 
-                        <a href="https://github.com/kermit60">Kermit60</a>
-                    </p>
-                </footer>
-            </div>
-        </nav>
-        <main id="main">
-            MAIN CONTENT
-        </main>
-    </div>
-    
+      <nav id="side-bar">
+        <div id="menu-links">
+          <a href="#" class="menu-link link selected" data-icon="all">
+            <img src="assets/all-icon.21c8956e24c00bcc2540.svg" alt="menu-icon-all" />
+            <p class="menu-link-title">All</p>
+          </a>
+          <a href="#" class="menu-link link" data-icon="today">
+            <img src="assets/today-icon.ae0df77c0292f7014087.svg" alt="menu-icon-today" />
+            <p class="menu-link-title">Today</p>
+          </a>
+          <a href="#" class="menu-link link" data-icon="week">
+            <img src="assets/week-icon.ddae9cc689b905fc56c1.svg" alt="menu-icon-week" />
+            <p class="menu-link-title">Week</p>
+          </a>
+          <a href="#" class="menu-link link" data-icon="important">
+            <img src="assets/important-icon.1aeb5d0cafd8f682f166.svg" alt="menu-icon-important" />
+            <p class="menu-link-title">Important</p>
+          </a>
+          <a href="#" class="menu-link link" data-icon="completed">
+            <img src="assets/completed-icon.5709096fd0888dde067e.svg" alt="menu-icon-complete" />
+            <p class="menu-link-title">Completed</p>
+          </a>
+        </div>
+        <div id="menu-projects">
+          <div class="project-title">
+            <p>Projects (2)</p>
+            <img
+              id="project-add-button"
+              src="assets/add-circle.66d4c4511281023625df.svg"
+              alt="add-icon"
+            />
+          </div>
+          <div class="project-links">
+            <!-- <a href="#" class="project-link link">
+                        <div class="project-content">
+                            <img src="./assets/important-icon.svg" alt="project-icon">
+                            <p class="menu-link-title">Important</p>
+                        </div>
+                        
+                        <div class="project-edit">
+                            <img src="./assets/edit-icon.svg" alt="project edit icon">
+                            <img src="./assets/delete-icon.svg" alt="project edit icon">
+                        </div>
+                        
+                    </a> -->
+          </div>
+          <footer id="project-footer">
+            <p class="">
+              Made by
+              <a href="https://github.com/kermit60" target="_blank">Kermit60</a>
+            </p>
+          </footer>
+        </div>
+      </nav>
+      <main id="main">
+        <header id="main-header">
+          <img src="assets/all-icon.21c8956e24c00bcc2540.svg" alt="all calendar icon" />
+          <h1>All</h1>
+        </header>
+        <div id="task-header">
+          <p class="task-counter">Tasks (0)</p>
+          <img
+            class="task-add-button hide"
+            src="assets/add-circle.66d4c4511281023625df.svg"
+            alt="add-icon"
+          />
+        </div>
 
-<script defer src="main.js"></script></body>
+        <div id="task-list">
+          <!-- TASK ITEMS -->
+          <!-- <div class="task-item">
+                    <div class="flex">
+                        <input type="checkbox" name="" id="">
+                        <p class="task-title">Something</p>
+                    </div>
+                    <div class="flex">
+                        <p class="date">2024-07-17</p>
+                        <img src="./assets/edit-icon.svg" alt="edit icon">
+                        <img src="./assets/delete-icon.svg" alt="">
+                        <img src="./assets/info-icon.svg" alt="">
+                    </div>
+                </div> -->
+        </div>
+      </main>
+    </div>
+
+    <dialog id="project-dialog">
+      <h1 class="form-title">Add project</h1>
+      <form id="project-form" action="" method="dialog">
+        <div>Title<span style="color: red">*</span></div>
+        <input
+          id="project-title-value"
+          class="inputs"
+          type="text"
+          name="project-title"
+          required
+        />
+        <div>Icon</div>
+        <div id="project-icons">
+          <div class="project-icon icon-selected" data-icon="book">
+            <img src="assets/book-icon.ac17b18276cd14d333ef.svg" alt="" />
+          </div>
+          <div class="project-icon" data-icon="family">
+            <img src="assets/family-icon.34586f15337601e2888f.svg" alt="" />
+          </div>
+          <div class="project-icon" data-icon="food">
+            <img src="assets/food-icon.ea5305af757f1b10bfc0.svg" alt="" />
+          </div>
+          <div class="project-icon" data-icon="gift">
+            <img src="assets/gift-icon.15bdcab2efc315fd9d5e.svg" alt="" />
+          </div>
+          <div class="project-icon" data-icon="shopping">
+            <img src="assets/shopping-icon.6d666acbd843454e657f.svg" alt="" />
+          </div>
+          <div class="project-icon" data-icon="sports">
+            <img src="assets/sports-icon.d4165c8ecc3fdc276991.svg" alt="" />
+          </div>
+        </div>
+        <hr class="divider" />
+        <div class="project-submit">
+          <input type="submit" value="Add" />
+          <button class="close-dialog">Cancel</button>
+        </div>
+      </form>
+    </dialog>
+    <dialog id="task-dialog">
+      <h1 class="form-title">Add Task</h1>
+      <form id="task-form" action="" method="dialog">
+        <div>
+          <label for="title">Title<span style="color: red">*</span></label>
+          <input id="title" class="inputs" type="text" name="title" required />
+        </div>
+        <div>
+          <label for="description">Description</label>
+          <textarea
+            id="description"
+            class="inputs"
+            rows="15"
+            cols="45"
+            name="description"
+          ></textarea>
+        </div>
+        <div>
+          <label for="dueDate">Due Date</label>
+          <input
+            id="dueDate"
+            class="inputs"
+            type="date"
+            name="title"
+            required
+          />
+        </div>
+        <div>
+          <div>Priority</div>
+          <select name="priority" id="priority" required>
+            <option value="" disabled>How important is this task?</option>
+            <option value="not-important">Meh, Not important</option>
+            <option value="a-bit-important">A little important</option>
+            <option value="important">Very important</option>
+          </select>
+        </div>
+        <hr class="divider" />
+        <div class="task-submit">
+          <input type="submit" value="Add" />
+          <button class="task-close-dialog">Cancel</button>
+        </div>
+      </form>
+    </dialog>
+
+    <dialog id="delete-dialog">
+      <h1 class="form-title">Delete Project</h1>
+      <form id="delete-form" action="" method="dialog">
+        <p>Are you sure?</p>
+        <div class="task-deletion-text">
+          Task <b>aosd</b> will be gone forever!
+        </div>
+        <div class="project-deletion-text">
+          Project <b>aodnsa</b> will be gone forever!
+        </div>
+        <hr class="divider" />
+        <div class="project-submit">
+          <input type="submit" value="Remove" />
+          <button class="close-dialog">Cancel</button>
+        </div>
+      </form>
+    </dialog>
+
+    <dialog id="display-dialog">
+      <h1 class="form-title">Task Info</h1>
+      <div id="display-form" method="dialog">
+        <div>
+          <div class="display-header">Title:</div>
+          <div class="display-description">ss</div>
+        </div>
+        <hr class="divider" />
+        <div>
+          <div class="display-header">Description:</div>
+          <div class="display-description description"></div>
+        </div>
+        <hr class="divider" />
+        <div>
+          <div class="display-header">Due date:</div>
+          <div class="display-description">s</div>
+        </div>
+        <hr class="divider" />
+        <div>
+          <div class="display-header">Priority:</div>
+          <div class="display-description">s</div>
+        </div>
+        <hr class="divider" />
+        <div>
+          <div class="display-header">Project:</div>
+          <div class="display-description">s</div>
+        </div>
+        <hr class="divider" />
+        <div class="task-submit">
+          <button class="task-close-dialog">Cancel</button>
+        </div>
+      </div>
+    </dialog>
+  <script defer src="main.js"></script></body>
 </html>
